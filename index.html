@@ -9,34 +9,17 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #f5f2eb;
-  --surface: #faf8f3;
-  --col-bg: #edeae1;
-  --col-border: #d6d1c4;
-  --card-bg: #fdfcf9;
-  --card-border: #e0dbd0;
+  --bg: #f5f2eb; --surface: #faf8f3; --col-bg: #edeae1;
+  --col-border: #d6d1c4; --card-bg: #fdfcf9; --card-border: #e0dbd0;
   --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --text-primary: #1c1a17;
-  --text-secondary: #6b6559;
-  --text-muted: #9e9890;
-  --accent-todo: #5a6e8c;
-  --accent-doing: #8c6e3f;
-  --accent-done: #4a7c59;
-  --accent-todo-light: #dce4ef;
-  --accent-doing-light: #f0e8d8;
-  --accent-done-light: #d8ece0;
-  --delete-color: #b85c5c;
-  --overdue-color: #b85c5c;
-  --overdue-light: #f5e0e0;
-  --soon-color: #8c6e3f;
-  --soon-light: #f0e8d8;
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-mono: 'DM Mono', monospace;
-  --radius: 10px;
-  --radius-sm: 6px;
-  --transition: 0.15s ease;
+  --text-primary: #1c1a17; --text-secondary: #6b6559; --text-muted: #9e9890;
+  --accent-todo: #5a6e8c; --accent-doing: #8c6e3f; --accent-done: #4a7c59;
+  --accent-todo-light: #dce4ef; --accent-doing-light: #f0e8d8; --accent-done-light: #d8ece0;
+  --delete-color: #b85c5c; --overdue-color: #b85c5c; --overdue-light: #f5e0e0;
+  --soon-color: #8c6e3f; --soon-light: #f0e8d8;
+  --font-display: 'Fraunces', Georgia, serif; --font-mono: 'DM Mono', monospace;
+  --radius: 10px; --radius-sm: 6px; --transition: 0.15s ease;
 }
-
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #1a1814; --surface: #211f1a; --col-bg: #282520;
@@ -50,234 +33,95 @@
   }
 }
 
-body {
-  font-family: var(--font-mono);
-  background: var(--bg);
-  color: var(--text-primary);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+body { font-family: var(--font-mono); background: var(--bg); color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; }
 
-/* ── LOGIN SCREEN ── */
-.login-screen {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-.login-card {
-  background: var(--surface);
-  border: 1px solid var(--col-border);
-  border-radius: var(--radius);
-  padding: 2.5rem 2rem;
-  width: 340px;
-  max-width: 100%;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-}
-.login-brand {
-  font-family: var(--font-display);
-  font-size: 1.8rem;
-  font-weight: 300;
-  font-style: italic;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.4rem;
-}
-.login-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 2rem;
-}
-.login-label {
-  font-size: 11px;
-  color: var(--text-secondary);
-  letter-spacing: 0.04em;
-  margin-bottom: 6px;
-  display: block;
-}
-.login-input {
-  width: 100%;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-sm);
-  padding: 9px 12px;
-  color: var(--text-primary);
-  outline: none;
-  margin-bottom: 1rem;
-  transition: border-color var(--transition);
-}
+/* ── LOGIN ── */
+.login-screen { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+.login-card { background: var(--surface); border: 1px solid var(--col-border); border-radius: var(--radius); padding: 2.5rem 2rem; width: 340px; max-width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
+.login-brand { font-family: var(--font-display); font-size: 1.8rem; font-weight: 300; font-style: italic; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+.login-sub { font-size: 11px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2rem; }
+.login-label { font-size: 11px; color: var(--text-secondary); letter-spacing: 0.04em; margin-bottom: 6px; display: block; }
+.login-input { width: 100%; font-family: var(--font-mono); font-size: 13px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-sm); padding: 9px 12px; color: var(--text-primary); outline: none; margin-bottom: 1rem; transition: border-color var(--transition); }
 .login-input:focus { border-color: var(--text-secondary); }
-.login-btn {
-  width: 100%;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  background: var(--text-primary);
-  color: var(--bg);
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: 10px;
-  cursor: pointer;
-  transition: opacity var(--transition);
-}
-.login-btn:hover { opacity: 0.85; }
-.login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.login-msg {
-  font-size: 11px;
-  margin-top: 0.75rem;
-  text-align: center;
-  min-height: 16px;
-  color: var(--text-secondary);
-}
-.login-msg.error { color: var(--delete-color); }
-.login-msg.success { color: var(--accent-done); }
+.login-btn { width: 100%; font-family: var(--font-mono); font-size: 13px; background: var(--text-primary); color: var(--bg); border: none; border-radius: var(--radius-sm); padding: 10px; cursor: pointer; transition: opacity var(--transition); }
+.login-btn:hover { opacity: 0.85; } .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.login-msg { font-size: 11px; margin-top: 0.75rem; text-align: center; min-height: 16px; color: var(--text-secondary); }
+.login-msg.error { color: var(--delete-color); } .login-msg.success { color: var(--accent-done); }
 
-/* ── SYNC STATUS ── */
-.sync-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  flex-shrink: 0;
-  transition: background 0.3s;
-}
-.sync-dot.syncing { background: var(--accent-doing); }
-.sync-dot.synced  { background: var(--accent-done); }
-.sync-dot.error   { background: var(--delete-color); }
+/* ── SYNC DOT ── */
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; transition: background 0.3s; }
+.sync-dot.syncing { background: var(--accent-doing); } .sync-dot.synced { background: var(--accent-done); } .sync-dot.error { background: var(--delete-color); }
 
 /* ── TOP NAV ── */
-.top-nav {
-  display: none;
-  align-items: stretch;
-  padding: 0 1.25rem;
-  border-bottom: 1px solid var(--col-border);
-  background: var(--surface);
-  min-height: 52px;
-  flex-shrink: 0;
-}
+.top-nav { display: none; align-items: stretch; padding: 0 1.25rem; border-bottom: 1px solid var(--col-border); background: var(--surface); min-height: 52px; flex-shrink: 0; }
 .top-nav.visible { display: flex; }
-
-.brand {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 300;
-  font-style: italic;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-  margin-right: 1.25rem;
-  white-space: nowrap;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.board-tabs {
-  display: flex;
-  align-items: stretch;
-  flex: 1;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
+.brand { font-family: var(--font-display); font-size: 1.15rem; font-weight: 300; font-style: italic; color: var(--text-primary); letter-spacing: -0.02em; margin-right: 1.25rem; white-space: nowrap; flex-shrink: 0; display: flex; align-items: center; gap: 8px; }
+.board-tabs { display: flex; align-items: stretch; flex: 1; overflow-x: auto; scrollbar-width: none; }
 .board-tabs::-webkit-scrollbar { display: none; }
-
-.board-tab {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0 14px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-secondary);
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: color var(--transition), border-color var(--transition);
-  position: relative;
-}
+.board-tab { display: flex; align-items: center; gap: 6px; padding: 0 14px; font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; transition: color var(--transition), border-color var(--transition); position: relative; }
 .board-tab:hover { color: var(--text-primary); }
 .board-tab.active { color: var(--text-primary); border-bottom-color: var(--text-primary); }
-
 .tab-name { pointer-events: none; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
 .board-tab.active .tab-name { pointer-events: auto; }
-
-.tab-rename-input {
-  display: none;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  background: none;
-  border: none;
-  color: var(--text-primary);
-  outline: none;
-  width: 110px;
-}
-.board-tab.renaming .tab-name { display: none; }
-.board-tab.renaming .tab-rename-input { display: block; }
-
-.tab-rename-btn {
-  background: none; border: none; cursor: pointer;
-  color: var(--text-muted); font-size: 11px; padding: 0 2px;
-  opacity: 0; transition: opacity var(--transition), color var(--transition);
-  line-height: 1; flex-shrink: 0; pointer-events: auto;
-}
-.board-tab:hover .tab-rename-btn { opacity: 1; }
-.tab-rename-btn:hover { color: var(--text-primary); }
-
-.tab-del {
-  background: none; border: none; cursor: pointer;
-  color: var(--text-muted); font-size: 11px; padding: 0;
-  opacity: 0; transition: opacity var(--transition), color var(--transition);
-  line-height: 1; flex-shrink: 0; pointer-events: auto;
-}
-.board-tab:hover .tab-del { opacity: 1; }
-.tab-del:hover { color: var(--delete-color); }
-
-.nav-actions {
-  display: flex; align-items: center; gap: 4px;
-  flex-shrink: 0; margin-left: 8px;
-}
-.nav-btn {
-  background: none; border: none; cursor: pointer;
-  color: var(--text-muted); font-size: 11px; padding: 5px 8px;
-  border-radius: var(--radius-sm);
-  display: flex; align-items: center; gap: 4px;
-  transition: color var(--transition), background var(--transition);
-  white-space: nowrap; font-family: var(--font-mono);
-}
+.tab-rename-input { display: none; font-family: var(--font-mono); font-size: 12px; background: none; border: none; color: var(--text-primary); outline: none; width: 110px; }
+.board-tab.renaming .tab-name { display: none; } .board-tab.renaming .tab-rename-input { display: block; }
+.tab-rename-btn { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 11px; padding: 0 2px; opacity: 0; transition: opacity var(--transition), color var(--transition); line-height: 1; flex-shrink: 0; pointer-events: auto; }
+.board-tab:hover .tab-rename-btn { opacity: 1; } .tab-rename-btn:hover { color: var(--text-primary); }
+.tab-del { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 11px; padding: 0; opacity: 0; transition: opacity var(--transition), color var(--transition); line-height: 1; flex-shrink: 0; pointer-events: auto; }
+.board-tab:hover .tab-del { opacity: 1; } .tab-del:hover { color: var(--delete-color); }
+.nav-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; margin-left: 8px; }
+.nav-btn { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 11px; padding: 5px 8px; border-radius: var(--radius-sm); display: flex; align-items: center; gap: 4px; transition: color var(--transition), background var(--transition); white-space: nowrap; font-family: var(--font-mono); }
 .nav-btn:hover { color: var(--text-primary); background: var(--col-bg); }
-.nav-btn.signout { color: var(--text-muted); }
 .nav-btn.signout:hover { color: var(--delete-color); }
+.nav-btn.active-indicator { color: var(--accent-done); }
+
+/* ── SPRINT HEADER ── */
+.sprint-header { display: none; background: var(--surface); border-bottom: 1px solid var(--col-border); padding: 0.875rem 2rem; flex-shrink: 0; }
+.sprint-header.visible { display: block; }
+.sprint-top { display: flex; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap; }
+.sprint-goal-wrap { flex: 1; min-width: 200px; }
+.sprint-goal-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+.sprint-goal-input { width: 100%; font-family: var(--font-mono); font-size: 12px; background: var(--col-bg); border: 1px solid var(--col-border); border-radius: var(--radius-sm); padding: 6px 10px; color: var(--text-primary); outline: none; resize: none; min-height: 32px; max-height: 80px; transition: border-color var(--transition); line-height: 1.4; }
+.sprint-goal-input:focus { border-color: var(--text-secondary); }
+.sprint-goal-input::placeholder { color: var(--text-muted); }
+.sprint-dates-wrap { display: flex; align-items: flex-end; gap: 1rem; flex-shrink: 0; flex-wrap: wrap; }
+.sprint-date-group { display: flex; flex-direction: column; gap: 4px; }
+.sprint-date-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.sprint-date-input { font-family: var(--font-mono); font-size: 11px; background: var(--col-bg); border: 1px solid var(--col-border); border-radius: var(--radius-sm); padding: 5px 8px; color: var(--text-primary); outline: none; cursor: pointer; transition: border-color var(--transition); }
+.sprint-date-input:focus { border-color: var(--text-secondary); }
+.sprint-progress-wrap { flex-shrink: 0; min-width: 140px; display: flex; flex-direction: column; gap: 4px; justify-content: flex-end; }
+.sprint-progress-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; display: flex; justify-content: space-between; }
+.sprint-bar-track { height: 5px; background: var(--col-border); border-radius: 3px; overflow: hidden; }
+.sprint-bar-fill { height: 100%; background: var(--accent-todo); border-radius: 3px; transition: width 0.4s ease, background 0.4s ease; }
+
+/* ── STANDUP PANEL ── */
+.standup-panel { display: none; background: var(--surface); border-bottom: 1px solid var(--col-border); padding: 0.875rem 2rem; flex-shrink: 0; }
+.standup-panel.visible { display: block; }
+.standup-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+.standup-title { font-family: var(--font-display); font-size: 0.95rem; font-weight: 300; font-style: italic; }
+.standup-date { font-size: 10px; color: var(--text-muted); letter-spacing: 0.04em; }
+.standup-fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+.standup-field { display: flex; flex-direction: column; gap: 4px; }
+.standup-field-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; }
+.standup-field-q { font-size: 10px; color: var(--text-secondary); font-style: italic; margin-bottom: 3px; }
+.standup-textarea { font-family: var(--font-mono); font-size: 11px; background: var(--col-bg); border: 1px solid var(--col-border); border-radius: var(--radius-sm); padding: 6px 9px; color: var(--text-primary); resize: none; outline: none; min-height: 56px; transition: border-color var(--transition); line-height: 1.5; }
+.standup-textarea:focus { border-color: var(--text-secondary); }
+.standup-textarea::placeholder { color: var(--text-muted); }
+.standup-actions { display: flex; align-items: center; gap: 8px; margin-top: 0.625rem; }
+.standup-save-btn { font-family: var(--font-mono); font-size: 11px; background: var(--text-primary); color: var(--bg); border: none; border-radius: var(--radius-sm); padding: 5px 14px; cursor: pointer; transition: opacity var(--transition); }
+.standup-save-btn:hover { opacity: 0.8; }
+.standup-nav-btn { font-family: var(--font-mono); font-size: 11px; background: none; border: 1px solid var(--col-border); border-radius: var(--radius-sm); padding: 5px 10px; color: var(--text-secondary); cursor: pointer; transition: background var(--transition); }
+.standup-nav-btn:hover { background: var(--col-bg); color: var(--text-primary); }
+.standup-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.standup-entry-date { font-size: 10px; color: var(--text-muted); margin-left: auto; }
 
 /* ── BOARD ── */
-.board {
-  display: none;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-  padding: 1.5rem 2rem 2.5rem;
-  flex: 1;
-  align-content: start;
-  overflow-y: auto;
-}
+.board { display: none; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; padding: 1.5rem 2rem 2.5rem; flex: 1; align-content: start; overflow-y: auto; }
 .board.visible { display: grid; }
 
 /* ── COLUMNS ── */
-.column {
-  background: var(--col-bg);
-  border: 1px solid var(--col-border);
-  border-radius: var(--radius);
-  display: flex; flex-direction: column;
-  overflow: hidden; min-height: 400px;
-}
-.col-header {
-  padding: 1rem 1.25rem 0.875rem;
-  display: flex; align-items: center; justify-content: space-between;
-  border-bottom: 1px solid var(--col-border);
-}
+.column { background: var(--col-bg); border: 1px solid var(--col-border); border-radius: var(--radius); display: flex; flex-direction: column; overflow: hidden; min-height: 400px; }
+.col-header { padding: 1rem 1.25rem 0.875rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--col-border); }
 .col-title-group { display: flex; align-items: center; gap: 10px; }
 .col-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 [data-col="todo"] .col-dot { background: var(--accent-todo); }
@@ -288,86 +132,39 @@ body {
 [data-col="todo"] .col-badge { background: var(--accent-todo-light); color: var(--accent-todo); }
 [data-col="doing"] .col-badge { background: var(--accent-doing-light); color: var(--accent-doing); }
 [data-col="done"] .col-badge { background: var(--accent-done-light); color: var(--accent-done); }
-
-.cards-container {
-  flex: 1; padding: 0.75rem;
-  display: flex; flex-direction: column; gap: 0.5rem;
-  overflow-y: auto;
-}
+.cards-container { flex: 1; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; }
 .cards-container.drag-over { background: rgba(0,0,0,0.03); }
 
 /* ── CARD ── */
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-sm);
-  padding: 0.7rem 0.875rem 0.65rem;
-  box-shadow: var(--card-shadow);
-  cursor: grab;
-  transition: box-shadow var(--transition), transform var(--transition), opacity var(--transition);
-}
+.card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-sm); padding: 0.7rem 0.875rem 0.65rem; box-shadow: var(--card-shadow); cursor: grab; transition: box-shadow var(--transition), transform var(--transition), opacity var(--transition); }
 .card:active { cursor: grabbing; }
 .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.05); transform: translateY(-1px); }
 .card.dragging { opacity: 0.4; transform: scale(0.97); box-shadow: none; }
-.card.drag-placeholder {
-  border: 1.5px dashed var(--col-border); background: transparent;
-  box-shadow: none; pointer-events: none; min-height: 60px;
-}
+.card.drag-placeholder { border: 1.5px dashed var(--col-border); background: transparent; box-shadow: none; pointer-events: none; min-height: 60px; }
 .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .card-text { font-size: 13px; line-height: 1.55; color: var(--text-primary); flex: 1; word-break: break-word; }
 .card-text[contenteditable="true"] { outline: none; cursor: text; }
 .card-actions { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
-.card-icon-btn {
-  background: none; border: none; cursor: pointer;
-  color: var(--text-muted); padding: 2px;
-  width: 20px; height: 20px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 3px; flex-shrink: 0; opacity: 0;
-  transition: opacity var(--transition), color var(--transition), background var(--transition);
-  font-size: 12px;
-}
+.card-icon-btn { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 2px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 3px; flex-shrink: 0; opacity: 0; transition: opacity var(--transition), color var(--transition), background var(--transition); font-size: 12px; }
 .card:hover .card-icon-btn { opacity: 1; }
 .card-icon-btn:hover { color: var(--text-primary); background: var(--col-bg); }
 .card-icon-btn.delete:hover { color: var(--delete-color); background: rgba(180,60,60,0.08); }
-
-/* ── CARD META ── */
 .card-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; align-items: center; }
-.date-pill {
-  display: inline-flex; align-items: center;
-  font-size: 10px; letter-spacing: 0.03em;
-  padding: 2px 7px; border-radius: 20px;
-  border: 1px solid var(--col-border);
-  color: var(--text-secondary); background: var(--col-bg); white-space: nowrap;
-}
+.date-pill { display: inline-flex; align-items: center; font-size: 10px; letter-spacing: 0.03em; padding: 2px 7px; border-radius: 20px; border: 1px solid var(--col-border); color: var(--text-secondary); background: var(--col-bg); white-space: nowrap; }
 .date-pill.overdue { background: var(--overdue-light); color: var(--overdue-color); border-color: var(--overdue-color); }
 .date-pill.soon { background: var(--soon-light); color: var(--soon-color); border-color: var(--soon-color); }
 .due-input-wrap { display: flex; align-items: center; gap: 5px; }
 .due-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.04em; }
-.due-input {
-  font-family: var(--font-mono); font-size: 10px;
-  background: var(--col-bg); border: 1px solid var(--col-border);
-  border-radius: 4px; padding: 2px 6px;
-  color: var(--text-primary); outline: none; cursor: pointer;
-  transition: border-color var(--transition);
-}
+.due-input { font-family: var(--font-mono); font-size: 10px; background: var(--col-bg); border: 1px solid var(--col-border); border-radius: 4px; padding: 2px 6px; color: var(--text-primary); outline: none; cursor: pointer; transition: border-color var(--transition); }
 .due-input:focus { border-color: var(--text-secondary); }
 
 /* ── CARD EXPAND ── */
 .card-expand { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--card-border); }
 .card-expand.open { display: block; }
-.expand-section { margin-bottom: 10px; }
-.expand-section:last-child { margin-bottom: 0; }
+.expand-section { margin-bottom: 10px; } .expand-section:last-child { margin-bottom: 0; }
 .expand-label { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; display: block; }
-.notes-input {
-  width: 100%; font-family: var(--font-mono); font-size: 12px;
-  background: var(--col-bg); border: 1px solid var(--col-border);
-  border-radius: var(--radius-sm); padding: 7px 9px;
-  color: var(--text-primary); resize: none; outline: none;
-  min-height: 60px; max-height: 160px;
-  transition: border-color var(--transition); line-height: 1.5;
-}
-.notes-input:focus { border-color: var(--text-secondary); }
-.notes-input::placeholder { color: var(--text-muted); }
+.notes-input { width: 100%; font-family: var(--font-mono); font-size: 12px; background: var(--col-bg); border: 1px solid var(--col-border); border-radius: var(--radius-sm); padding: 7px 9px; color: var(--text-primary); resize: none; outline: none; min-height: 60px; max-height: 160px; transition: border-color var(--transition); line-height: 1.5; }
+.notes-input:focus { border-color: var(--text-secondary); } .notes-input::placeholder { color: var(--text-muted); }
 .checklist { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
 .checklist-item { display: flex; align-items: center; gap: 7px; padding: 3px 0; }
 .checklist-item input[type="checkbox"] { width: 13px; height: 13px; cursor: pointer; accent-color: var(--accent-done); flex-shrink: 0; }
@@ -375,144 +172,94 @@ body {
 .checklist-item-text:focus { border-bottom: 1px solid var(--col-border); }
 .checklist-item.checked .checklist-item-text { text-decoration: line-through; color: var(--text-muted); }
 .checklist-item-del { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 11px; padding: 0; opacity: 0; transition: opacity var(--transition), color var(--transition); }
-.checklist-item:hover .checklist-item-del { opacity: 1; }
-.checklist-item-del:hover { color: var(--delete-color); }
+.checklist-item:hover .checklist-item-del { opacity: 1; } .checklist-item-del:hover { color: var(--delete-color); }
 .checklist-progress { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .checklist-bar-track { flex: 1; height: 4px; background: var(--col-border); border-radius: 2px; overflow: hidden; }
 .checklist-bar-fill { height: 100%; border-radius: 2px; transition: width 0.2s ease; }
 .checklist-progress-pct { font-size: 10px; color: var(--text-secondary); font-weight: 500; min-width: 30px; text-align: right; }
 .add-checklist-item { display: flex; gap: 5px; align-items: center; }
-.checklist-new-input {
-  flex: 1; font-family: var(--font-mono); font-size: 12px;
-  background: var(--col-bg); border: 1px solid var(--col-border);
-  border-radius: 4px; padding: 4px 8px;
-  color: var(--text-primary); outline: none; transition: border-color var(--transition);
-}
-.checklist-new-input:focus { border-color: var(--text-secondary); }
-.checklist-new-input::placeholder { color: var(--text-muted); }
-.checklist-add-btn {
-  font-family: var(--font-mono); font-size: 14px;
-  background: var(--col-bg); border: 1px solid var(--col-border);
-  border-radius: 4px; padding: 3px 8px;
-  color: var(--text-secondary); cursor: pointer;
-  transition: background var(--transition), color var(--transition);
-}
+.checklist-new-input { flex: 1; font-family: var(--font-mono); font-size: 12px; background: var(--col-bg); border: 1px solid var(--col-border); border-radius: 4px; padding: 4px 8px; color: var(--text-primary); outline: none; transition: border-color var(--transition); }
+.checklist-new-input:focus { border-color: var(--text-secondary); } .checklist-new-input::placeholder { color: var(--text-muted); }
+.checklist-add-btn { font-family: var(--font-mono); font-size: 14px; background: var(--col-bg); border: 1px solid var(--col-border); border-radius: 4px; padding: 3px 8px; color: var(--text-secondary); cursor: pointer; transition: background var(--transition), color var(--transition); }
 .checklist-add-btn:hover { background: var(--card-border); color: var(--text-primary); }
 
 /* ── ADD AREA ── */
 .add-area { padding: 0.625rem 0.75rem 0.75rem; border-top: 1px solid var(--col-border); }
 .add-input-wrap { display: flex; align-items: flex-end; gap: 6px; }
-.add-input {
-  flex: 1; font-family: var(--font-mono); font-size: 12px;
-  background: var(--card-bg); border: 1px solid var(--card-border);
-  border-radius: var(--radius-sm); padding: 7px 10px;
-  color: var(--text-primary); resize: none; outline: none;
-  transition: border-color var(--transition);
-  min-height: 34px; max-height: 96px; overflow-y: auto;
-}
+.add-input { flex: 1; font-family: var(--font-mono); font-size: 12px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-sm); padding: 7px 10px; color: var(--text-primary); resize: none; outline: none; transition: border-color var(--transition); min-height: 34px; max-height: 96px; overflow-y: auto; }
 .add-input::placeholder { color: var(--text-muted); }
-.add-btn {
-  font-family: var(--font-mono); font-size: 18px; line-height: 1;
-  background: var(--text-primary); color: var(--bg);
-  border: none; border-radius: var(--radius-sm);
-  width: 34px; height: 34px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; flex-shrink: 0;
-  transition: opacity var(--transition), transform var(--transition);
-}
-.add-btn:hover { opacity: 0.8; }
-.add-btn:active { transform: scale(0.95); }
+.add-btn { font-family: var(--font-mono); font-size: 18px; line-height: 1; background: var(--text-primary); color: var(--bg); border: none; border-radius: var(--radius-sm); width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: opacity var(--transition), transform var(--transition); }
+.add-btn:hover { opacity: 0.8; } .add-btn:active { transform: scale(0.95); }
 
 /* ── EMPTY STATE ── */
-.empty-state {
-  text-align: center; padding: 2rem 1rem;
-  color: var(--text-muted); font-size: 11px;
-  letter-spacing: 0.06em; text-transform: uppercase; display: none;
-}
+.empty-state { text-align: center; padding: 2rem 1rem; color: var(--text-muted); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; display: none; }
 .cards-container.is-empty ~ .empty-state { display: block; }
 
 /* ── ARCHIVE DRAWER ── */
-.archive-drawer {
-  display: none; position: fixed; top: 52px; right: 0; bottom: 0;
-  width: 280px; background: var(--surface);
-  border-left: 1px solid var(--col-border); z-index: 50;
-  flex-direction: column; box-shadow: -4px 0 16px rgba(0,0,0,0.08);
-}
+.archive-drawer { display: none; position: fixed; top: 52px; right: 0; bottom: 0; width: 300px; background: var(--surface); border-left: 1px solid var(--col-border); z-index: 50; flex-direction: column; box-shadow: -4px 0 16px rgba(0,0,0,0.08); }
 .archive-drawer.open { display: flex; }
-.archive-header {
-  padding: 1rem 1.25rem 0.875rem; border-bottom: 1px solid var(--col-border);
-  display: flex; align-items: center; justify-content: space-between;
-}
+.archive-header { padding: 1rem 1.25rem 0.875rem; border-bottom: 1px solid var(--col-border); display: flex; align-items: center; justify-content: space-between; }
 .archive-title { font-family: var(--font-display); font-size: 1rem; font-weight: 300; font-style: italic; }
 .archive-close { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 16px; transition: color var(--transition); }
 .archive-close:hover { color: var(--text-primary); }
-.archive-list { flex: 1; overflow-y: auto; padding: 0.75rem; display: flex; flex-direction: column; gap: 6px; }
-.archive-item {
-  background: var(--col-bg); border: 1px solid var(--col-border);
-  border-radius: var(--radius-sm); padding: 10px 12px;
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-}
+.archive-list { flex: 1; overflow-y: auto; padding: 0.75rem; display: flex; flex-direction: column; gap: 8px; }
+.archive-item { background: var(--col-bg); border: 1px solid var(--col-border); border-radius: var(--radius-sm); overflow: hidden; }
+.archive-item-header { padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer; }
+.archive-item-header:hover { background: rgba(0,0,0,0.02); }
+.archive-item-name-col { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+.archive-item-name { font-size: 12px; font-weight: 500; }
+.archive-item-date { font-size: 10px; color: var(--text-muted); }
 .archive-item-actions { display: flex; gap: 4px; flex-shrink: 0; }
-.archive-action-btn {
-  background: none; border: 1px solid var(--col-border);
-  border-radius: 4px; padding: 3px 8px;
-  font-family: var(--font-mono); font-size: 10px;
-  color: var(--text-secondary); cursor: pointer;
-  transition: background var(--transition), color var(--transition);
-}
+.archive-action-btn { background: none; border: 1px solid var(--col-border); border-radius: 4px; padding: 3px 8px; font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); cursor: pointer; transition: background var(--transition), color var(--transition); }
 .archive-action-btn:hover { background: var(--card-border); color: var(--text-primary); }
 .archive-action-btn.danger:hover { color: var(--delete-color); border-color: var(--delete-color); }
+.archive-retro { display: none; border-top: 1px solid var(--col-border); padding: 10px 12px; background: var(--card-bg); }
+.archive-retro.open { display: block; }
+.archive-retro-title { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+.retro-item { margin-bottom: 8px; }
+.retro-item:last-child { margin-bottom: 0; }
+.retro-item-label { font-size: 10px; color: var(--text-secondary); margin-bottom: 3px; }
+.retro-item-text { font-size: 11px; color: var(--text-primary); line-height: 1.5; white-space: pre-wrap; }
+.retro-item-empty { font-size: 11px; color: var(--text-muted); font-style: italic; }
 .archive-empty { text-align: center; padding: 2rem 1rem; color: var(--text-muted); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
 
-/* ── MODAL ── */
-.modal-overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,0.35); z-index: 100;
-  align-items: center; justify-content: center;
-}
+/* ── MODALS ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 100; align-items: center; justify-content: center; }
 .modal-overlay.open { display: flex; }
-.modal {
-  background: var(--surface); border: 1px solid var(--col-border);
-  border-radius: var(--radius); padding: 1.5rem; width: 340px; max-width: 90vw;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-}
+.modal { background: var(--surface); border: 1px solid var(--col-border); border-radius: var(--radius); padding: 1.5rem; width: 420px; max-width: 90vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
 .modal h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 300; font-style: italic; margin-bottom: 0.75rem; }
 .modal p { font-size: 12px; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5; }
-.modal input[type="text"] {
-  width: 100%; font-family: var(--font-mono); font-size: 13px;
-  background: var(--card-bg); border: 1px solid var(--card-border);
-  border-radius: var(--radius-sm); padding: 8px 12px;
-  color: var(--text-primary); outline: none; margin-bottom: 1rem;
-}
+.modal input[type="text"] { width: 100%; font-family: var(--font-mono); font-size: 13px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-sm); padding: 8px 12px; color: var(--text-primary); outline: none; margin-bottom: 1rem; }
 .modal input[type="text"]:focus { border-color: var(--text-secondary); }
-.modal-btns { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
-.modal-btn {
-  font-family: var(--font-mono); font-size: 12px; padding: 6px 14px;
-  border-radius: var(--radius-sm); border: 1px solid var(--col-border);
-  cursor: pointer; background: var(--col-bg); color: var(--text-primary);
-  transition: background var(--transition), opacity var(--transition);
-}
+.modal-field { margin-bottom: 1rem; }
+.modal-field-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 5px; display: block; }
+.modal-field-q { font-size: 11px; color: var(--text-secondary); font-style: italic; margin-bottom: 5px; }
+.modal-textarea { width: 100%; font-family: var(--font-mono); font-size: 12px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-sm); padding: 8px 12px; color: var(--text-primary); outline: none; resize: none; min-height: 72px; line-height: 1.5; transition: border-color var(--transition); }
+.modal-textarea:focus { border-color: var(--text-secondary); }
+.modal-textarea::placeholder { color: var(--text-muted); }
+.modal-btns { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 1rem; }
+.modal-btn { font-family: var(--font-mono); font-size: 12px; padding: 6px 14px; border-radius: var(--radius-sm); border: 1px solid var(--col-border); cursor: pointer; background: var(--col-bg); color: var(--text-primary); transition: background var(--transition), opacity var(--transition); }
 .modal-btn:hover { background: var(--card-border); }
 .modal-btn.primary { background: var(--text-primary); color: var(--bg); border-color: var(--text-primary); }
 .modal-btn.primary:hover { opacity: 0.85; }
+.modal-divider { border: none; border-top: 1px solid var(--col-border); margin: 1rem 0; }
 
 /* ── ANIMATIONS ── */
 .card-enter { animation: cardIn 0.2s ease forwards; }
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(6px) scale(0.98); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
+@keyframes cardIn { from { opacity: 0; transform: translateY(6px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
 @media (max-width: 700px) {
   .board { grid-template-columns: 1fr; }
   .brand { font-size: 1rem; margin-right: 0.75rem; }
   .archive-drawer { width: 100%; }
+  .standup-fields { grid-template-columns: 1fr; }
+  .sprint-top { flex-direction: column; }
 }
 </style>
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div class="login-screen" id="login-screen">
   <div class="login-card">
     <div class="login-brand">Gary's Tracker</div>
@@ -524,19 +271,80 @@ body {
   </div>
 </div>
 
-<!-- TOP NAV (hidden until logged in) -->
+<!-- TOP NAV -->
 <nav class="top-nav" id="top-nav">
   <span class="brand">
-    <span class="sync-dot" id="sync-dot" title="Sync status"></span>
+    <span class="sync-dot" id="sync-dot"></span>
     Gary's Board
   </span>
   <div class="board-tabs" id="board-tabs"></div>
   <div class="nav-actions">
+    <button class="nav-btn" id="standup-toggle-btn" title="Daily standup">&#9654; Standup</button>
     <button class="nav-btn" id="archive-toggle-btn">&#9632; Archive</button>
-    <button class="nav-btn" id="new-board-btn">+ New board</button>
+    <button class="nav-btn" id="new-board-btn">+ New sprint</button>
     <button class="nav-btn signout" id="signout-btn">Sign out</button>
   </div>
 </nav>
+
+<!-- SPRINT HEADER -->
+<div class="sprint-header" id="sprint-header">
+  <div class="sprint-top">
+    <div class="sprint-goal-wrap">
+      <div class="sprint-goal-label">Sprint goal</div>
+      <textarea class="sprint-goal-input" id="sprint-goal" placeholder="What will you accomplish this sprint?..." rows="1"></textarea>
+    </div>
+    <div class="sprint-dates-wrap">
+      <div class="sprint-date-group">
+        <div class="sprint-date-label">Start</div>
+        <input type="date" class="sprint-date-input" id="sprint-start" />
+      </div>
+      <div class="sprint-date-group">
+        <div class="sprint-date-label">End</div>
+        <input type="date" class="sprint-date-input" id="sprint-end" />
+      </div>
+      <div class="sprint-progress-wrap" id="sprint-progress-wrap">
+        <div class="sprint-progress-label">
+          <span>Sprint progress</span>
+          <span id="sprint-days-label">–</span>
+        </div>
+        <div class="sprint-bar-track">
+          <div class="sprint-bar-fill" id="sprint-bar-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STANDUP PANEL -->
+<div class="standup-panel" id="standup-panel">
+  <div class="standup-header">
+    <span class="standup-title">Daily standup</span>
+    <span class="standup-date" id="standup-date"></span>
+  </div>
+  <div class="standup-fields">
+    <div class="standup-field">
+      <div class="standup-field-label">Yesterday</div>
+      <div class="standup-field-q">What did I complete?</div>
+      <textarea class="standup-textarea" id="standup-yesterday" placeholder="Write it down..."></textarea>
+    </div>
+    <div class="standup-field">
+      <div class="standup-field-label">Today</div>
+      <div class="standup-field-q">What will I complete?</div>
+      <textarea class="standup-textarea" id="standup-today" placeholder="Write it down..."></textarea>
+    </div>
+    <div class="standup-field">
+      <div class="standup-field-label">Blockers</div>
+      <div class="standup-field-q">What is blocking me?</div>
+      <textarea class="standup-textarea" id="standup-blockers" placeholder="Write it down..."></textarea>
+    </div>
+  </div>
+  <div class="standup-actions">
+    <button class="standup-save-btn" id="standup-save">Save</button>
+    <button class="standup-nav-btn" id="standup-prev">&#8592; Prev</button>
+    <button class="standup-nav-btn" id="standup-next">Next &#8594;</button>
+    <span class="standup-entry-date" id="standup-viewing-date"></span>
+  </div>
+</div>
 
 <!-- BOARD -->
 <div class="board" id="board"></div>
@@ -544,22 +352,50 @@ body {
 <!-- ARCHIVE DRAWER -->
 <div class="archive-drawer" id="archive-drawer">
   <div class="archive-header">
-    <span class="archive-title">Archived boards</span>
+    <span class="archive-title">Sprint archive</span>
     <button class="archive-close" id="archive-close">&#x2715;</button>
   </div>
   <div class="archive-list" id="archive-list"></div>
 </div>
 
-<!-- NEW BOARD MODAL -->
+<!-- NEW SPRINT MODAL -->
 <div class="modal-overlay" id="modal-new">
   <div class="modal">
-    <h2>New board</h2>
-    <input type="text" id="new-board-name" placeholder="Board name..." maxlength="40" />
-    <p>Copy all cards from <strong id="current-board-name-label"></strong> into this board?</p>
+    <h2>New sprint</h2>
+    <input type="text" id="new-board-name" placeholder="Sprint name... e.g. Sprint 2 — Apr 18" maxlength="60" />
+    <p>Copy all cards from <strong id="current-board-name-label"></strong> into this sprint?</p>
     <div class="modal-btns">
       <button class="modal-btn" id="modal-cancel">Cancel</button>
       <button class="modal-btn" id="modal-blank">Start blank</button>
       <button class="modal-btn primary" id="modal-copy">Copy cards</button>
+    </div>
+  </div>
+</div>
+
+<!-- RETROSPECTIVE MODAL -->
+<div class="modal-overlay" id="modal-retro">
+  <div class="modal">
+    <h2>Sprint retrospective</h2>
+    <p>Before archiving, take 5 minutes to reflect on this sprint.</p>
+    <hr class="modal-divider">
+    <div class="modal-field">
+      <div class="modal-field-label">What went well</div>
+      <div class="modal-field-q">What should you keep doing next sprint?</div>
+      <textarea class="modal-textarea" id="retro-well" placeholder="Write it down..."></textarea>
+    </div>
+    <div class="modal-field">
+      <div class="modal-field-label">What didn't go well</div>
+      <div class="modal-field-q">What slowed you down or didn't work?</div>
+      <textarea class="modal-textarea" id="retro-bad" placeholder="Write it down..."></textarea>
+    </div>
+    <div class="modal-field">
+      <div class="modal-field-label">What will I do differently</div>
+      <div class="modal-field-q">One concrete change for next sprint.</div>
+      <textarea class="modal-textarea" id="retro-diff" placeholder="Write it down..."></textarea>
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn" id="retro-skip">Skip & archive</button>
+      <button class="modal-btn primary" id="retro-save">Save & archive</button>
     </div>
   </div>
 </div>
@@ -575,34 +411,32 @@ const COL_LABELS = { todo:'To Do', doing:'Doing', done:'Done' };
 const COL_EMPTY  = { todo:'Nothing here yet', doing:'Nothing in progress', done:'Completions appear here' };
 
 // ── STATE ─────────────────────────────────────────────────────────────────
-let currentUser  = null;
-let appState     = { activeBoardId: null, boards: [], archived: [] };
-let draggedCard  = null, placeholder = null;
-let saveTimer    = null;
+let currentUser = null;
+let appState    = { activeBoardId: null, boards: [], archived: [] };
+let draggedCard = null, placeholder = null;
+let saveTimer   = null;
+let retroArchiveTarget = null; // board being archived pending retro
+let standupViewDate = null;    // date currently shown in standup panel
 
 // ── UTILS ─────────────────────────────────────────────────────────────────
 function genId()    { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function todayStr() { return new Date().toISOString().slice(0,10); }
 function fmtDate(s) { if (!s) return ''; const [y,m,d] = s.split('-'); return `${m}/${d}/${y.slice(2)}`; }
+function fmtDateLong(s) {
+  if (!s) return '';
+  const d = new Date(s + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
 function deepClone(o) { return JSON.parse(JSON.stringify(o)); }
 
-// ── SUPABASE FETCH HELPER ─────────────────────────────────────────────────
+// ── SUPABASE ──────────────────────────────────────────────────────────────
 async function sb(path, method='GET', body=null, token=null) {
-  const headers = {
-    'apikey': SUPABASE_KEY,
-    'Content-Type': 'application/json',
-    'Prefer': 'return=representation'
-  };
-  if (token) headers['Authorization'] = 'Bearer ' + token;
-  else headers['Authorization'] = 'Bearer ' + SUPABASE_KEY;
-
+  const headers = { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
+  headers['Authorization'] = 'Bearer ' + (token || SUPABASE_KEY);
   const opts = { method, headers };
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(SUPABASE_URL + path, opts);
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(err);
-  }
+  if (!res.ok) throw new Error(await res.text());
   const text = await res.text();
   return text ? JSON.parse(text) : null;
 }
@@ -618,16 +452,12 @@ async function sendMagicLink(email) {
 }
 
 async function getSession() {
-  // Check URL for token from magic link
   const hash = window.location.hash;
   if (hash.includes('access_token')) {
     const params = new URLSearchParams(hash.slice(1));
     const token = params.get('access_token');
     if (token) {
-      // Get user from token
-      const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token }
-      });
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token } });
       if (res.ok) {
         const user = await res.json();
         const session = { access_token: token, user };
@@ -637,15 +467,11 @@ async function getSession() {
       }
     }
   }
-  // Check localStorage
   const stored = localStorage.getItem('gb_session');
   if (stored) {
     try {
       const session = JSON.parse(stored);
-      // Verify token is still valid
-      const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + session.access_token }
-      });
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + session.access_token } });
       if (res.ok) return session;
       localStorage.removeItem('gb_session');
     } catch(e) {}
@@ -658,44 +484,27 @@ function signOut() {
   currentUser = null;
   document.getElementById('top-nav').classList.remove('visible');
   document.getElementById('board').classList.remove('visible');
+  document.getElementById('sprint-header').classList.remove('visible');
+  document.getElementById('standup-panel').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('login-msg').textContent = '';
 }
 
 // ── SYNC STATUS ───────────────────────────────────────────────────────────
-function setSyncStatus(status) {
+function setSyncStatus(s) {
   const dot = document.getElementById('sync-dot');
-  dot.className = 'sync-dot ' + status;
+  dot.className = 'sync-dot ' + s;
 }
 
-// ── SUPABASE DB ───────────────────────────────────────────────────────────
+// ── DB ─────────────────────────────────────────────────────────────────────
 async function loadBoardsFromDB(token, userId) {
   const data = await sb(`/rest/v1/boards?user_id=eq.${userId}&order=created_at.asc`, 'GET', null, token);
   return data || [];
 }
 
-async function upsertBoard(token, board, userId) {
-  const lastDone = boardLastDoneDate(board);
-  await sb('/rest/v1/boards', 'POST', {
-    id: board.id,
-    user_id: userId,
-    name: board.name,
-    cards: board.cards,
-    archived: false,
-    last_done_date: lastDone
-  }, token);
-}
-
-async function upsertBoardArchived(token, board, userId) {
-  const lastDone = boardLastDoneDate(board);
-  await sb('/rest/v1/boards', 'POST', {
-    id: board.id,
-    user_id: userId,
-    name: board.name,
-    cards: board.cards,
-    archived: true,
-    last_done_date: lastDone
-  }, token);
+function boardLastDoneDate(board) {
+  const done = board.cards && board.cards.done ? board.cards.done : [];
+  const dates = done.map(c => c.completedDate || '').filter(Boolean).sort().reverse();
+  return dates[0] || '';
 }
 
 async function updateBoardInDB(token, board, userId, archived=false) {
@@ -705,7 +514,26 @@ async function updateBoardInDB(token, board, userId, archived=false) {
     cards: board.cards,
     archived,
     last_done_date: lastDone,
+    sprint_goal: board.sprintGoal || '',
+    sprint_start: board.sprintStart || null,
+    sprint_end: board.sprintEnd || null,
+    standup_log: board.standupLog || {},
+    retro: board.retro || null,
     updated_at: new Date().toISOString()
+  }, token);
+}
+
+async function upsertBoardToDB(token, board, userId, archived=false) {
+  const lastDone = boardLastDoneDate(board);
+  await sb('/rest/v1/boards', 'POST', {
+    id: board.id, user_id: userId,
+    name: board.name, cards: board.cards, archived,
+    last_done_date: lastDone,
+    sprint_goal: board.sprintGoal || '',
+    sprint_start: board.sprintStart || null,
+    sprint_end: board.sprintEnd || null,
+    standup_log: board.standupLog || {},
+    retro: board.retro || null
   }, token);
 }
 
@@ -713,7 +541,14 @@ async function deleteBoardFromDB(token, boardId) {
   await sb(`/rest/v1/boards?id=eq.${boardId}`, 'DELETE', null, token);
 }
 
-// ── PERSISTENCE ───────────────────────────────────────────────────────────
+function getToken() {
+  try { return JSON.parse(localStorage.getItem('gb_session') || '{}').access_token; } catch(e) { return null; }
+}
+function getUserId() {
+  try { return JSON.parse(localStorage.getItem('gb_session') || '{}').user?.id; } catch(e) { return null; }
+}
+
+// ── SNAPSHOT & SAVE ────────────────────────────────────────────────────────
 function snapshotActive() {
   const board = activeBoard();
   if (!board) return;
@@ -722,6 +557,10 @@ function snapshotActive() {
     if (!container) return;
     board.cards[col] = [...container.querySelectorAll('.card')].map(cardToData);
   });
+  // Snapshot sprint fields
+  board.sprintGoal  = document.getElementById('sprint-goal').value;
+  board.sprintStart = document.getElementById('sprint-start').value;
+  board.sprintEnd   = document.getElementById('sprint-end').value;
 }
 
 function cardToData(el) {
@@ -730,35 +569,26 @@ function cardToData(el) {
     checked: item.querySelector('input[type="checkbox"]').checked
   }));
   return {
-    id: el.dataset.id,
-    text: el.querySelector('.card-text').textContent,
-    dueDate: el.dataset.dueDate || '',
-    completedDate: el.dataset.completedDate || '',
+    id: el.dataset.id, text: el.querySelector('.card-text').textContent,
+    dueDate: el.dataset.dueDate || '', completedDate: el.dataset.completedDate || '',
     notes: el.querySelector('.notes-input') ? el.querySelector('.notes-input').value : '',
     checklist
   };
 }
 
-// Debounced save — waits 800ms after last change before syncing to DB
 function save() {
   snapshotActive();
   updateCounts();
+  updateSprintProgress();
   clearTimeout(saveTimer);
   setSyncStatus('syncing');
   saveTimer = setTimeout(async () => {
     try {
-      const session = JSON.parse(localStorage.getItem('gb_session') || '{}');
-      const token = session.access_token;
-      const userId = session.user?.id;
-      if (!token || !userId) return;
       const board = activeBoard();
-      if (board) await updateBoardInDB(token, board, userId, false);
+      if (board) await updateBoardInDB(getToken(), board, getUserId(), false);
       setSyncStatus('synced');
       setTimeout(() => setSyncStatus(''), 2000);
-    } catch(e) {
-      setSyncStatus('error');
-      console.error('Sync error:', e);
-    }
+    } catch(e) { setSyncStatus('error'); console.error(e); }
   }, 800);
 }
 
@@ -767,44 +597,50 @@ function activeBoard() { return appState.boards.find(b => b.id === appState.acti
 // ── BOOTSTRAP ─────────────────────────────────────────────────────────────
 async function bootstrap() {
   const session = await getSession();
-  if (!session) return; // stay on login screen
-
+  if (!session) return;
   currentUser = session.user;
   showApp();
-
   try {
     const rows = await loadBoardsFromDB(session.access_token, currentUser.id);
-    appState.boards   = rows.filter(r => !r.archived).map(r => ({ id: r.id, name: r.name, cards: r.cards || { todo:[], doing:[], done:[] } }));
-    appState.archived = rows.filter(r => r.archived).map(r => ({ id: r.id, name: r.name, cards: r.cards || { todo:[], doing:[], done:[] } }));
-
-    // Sort archived by last_done_date desc
+    appState.boards   = rows.filter(r => !r.archived).map(rowToBoard);
+    appState.archived = rows.filter(r => r.archived).map(rowToBoard);
     appState.archived.sort((a, b) => {
       const da = boardLastDoneDate(a), db = boardLastDoneDate(b);
       if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
       return db.localeCompare(da);
     });
-
     if (!appState.boards.length) {
-      // First time user — create default board
       const id = genId();
-      const board = { id, name: 'My First Board', cards: { todo:[], doing:[], done:[] } };
+      const board = newBoardObj(id, 'Sprint 1');
       appState.boards = [board];
-      await upsertBoard(session.access_token, board, currentUser.id);
+      await upsertBoardToDB(session.access_token, board, currentUser.id);
     }
-
     appState.activeBoardId = appState.boards[0].id;
-    renderTabs();
-    renderBoard();
-  } catch(e) {
-    console.error('Load error:', e);
-    setSyncStatus('error');
-  }
+    renderTabs(); renderBoard(); renderSprintHeader();
+  } catch(e) { setSyncStatus('error'); console.error(e); }
+}
+
+function rowToBoard(r) {
+  return {
+    id: r.id, name: r.name,
+    cards: r.cards || { todo:[], doing:[], done:[] },
+    sprintGoal: r.sprint_goal || '',
+    sprintStart: r.sprint_start || '',
+    sprintEnd: r.sprint_end || '',
+    standupLog: r.standup_log || {},
+    retro: r.retro || null
+  };
+}
+
+function newBoardObj(id, name) {
+  return { id, name, cards: { todo:[], doing:[], done:[] }, sprintGoal:'', sprintStart:'', sprintEnd:'', standupLog:{}, retro:null };
 }
 
 function showApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('top-nav').classList.add('visible');
   document.getElementById('board').classList.add('visible');
+  document.getElementById('sprint-header').classList.add('visible');
 }
 
 // ── LOGIN UI ──────────────────────────────────────────────────────────────
@@ -813,27 +649,118 @@ document.getElementById('login-btn').addEventListener('click', async () => {
   const msg = document.getElementById('login-msg');
   const btn = document.getElementById('login-btn');
   if (!email) { msg.textContent = 'Enter your email address.'; msg.className = 'login-msg error'; return; }
-  btn.disabled = true;
-  btn.textContent = 'Sending...';
-  msg.textContent = '';
+  btn.disabled = true; btn.textContent = 'Sending...'; msg.textContent = '';
   try {
     await sendMagicLink(email);
-    msg.textContent = 'Check your email for a magic link.';
-    msg.className = 'login-msg success';
+    msg.textContent = 'Check your email for a magic link.'; msg.className = 'login-msg success';
     btn.textContent = 'Sent!';
   } catch(e) {
-    msg.textContent = 'Something went wrong. Try again.';
-    msg.className = 'login-msg error';
-    btn.disabled = false;
-    btn.textContent = 'Send magic link';
+    msg.textContent = 'Something went wrong. Try again.'; msg.className = 'login-msg error';
+    btn.disabled = false; btn.textContent = 'Send magic link';
   }
 });
+document.getElementById('login-email').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('login-btn').click(); });
+document.getElementById('signout-btn').addEventListener('click', signOut);
 
-document.getElementById('login-email').addEventListener('keydown', e => {
-  if (e.key === 'Enter') document.getElementById('login-btn').click();
+// ── SPRINT HEADER ──────────────────────────────────────────────────────────
+function renderSprintHeader() {
+  const board = activeBoard();
+  if (!board) return;
+  document.getElementById('sprint-goal').value = board.sprintGoal || '';
+  document.getElementById('sprint-start').value = board.sprintStart || '';
+  document.getElementById('sprint-end').value = board.sprintEnd || '';
+  updateSprintProgress();
+}
+
+function updateSprintProgress() {
+  const start = document.getElementById('sprint-start').value;
+  const end   = document.getElementById('sprint-end').value;
+  const fill  = document.getElementById('sprint-bar-fill');
+  const label = document.getElementById('sprint-days-label');
+  if (!start || !end) { fill.style.width = '0%'; label.textContent = '–'; return; }
+  const s = new Date(start + 'T00:00:00');
+  const e = new Date(end + 'T00:00:00');
+  const now = new Date(); now.setHours(0,0,0,0);
+  const total = (e - s) / 86400000;
+  const elapsed = Math.max(0, Math.min(total, (now - s) / 86400000));
+  const pct = total > 0 ? Math.round((elapsed / total) * 100) : 0;
+  const remaining = Math.max(0, Math.ceil((e - now) / 86400000));
+  fill.style.width = pct + '%';
+  fill.style.background = pct >= 100 ? 'var(--delete-color)' : pct > 70 ? 'var(--soon-color)' : 'var(--accent-todo)';
+  label.textContent = pct >= 100 ? 'Ended' : remaining === 0 ? 'Last day' : remaining + 'd left';
+}
+
+['sprint-goal','sprint-start','sprint-end'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('change', save);
+  if (id === 'sprint-goal') el.addEventListener('input', () => { el.style.height='auto'; el.style.height = Math.min(el.scrollHeight, 80) + 'px'; });
+  if (id === 'sprint-start' || id === 'sprint-end') el.addEventListener('change', updateSprintProgress);
 });
 
-document.getElementById('signout-btn').addEventListener('click', signOut);
+// ── STANDUP PANEL ─────────────────────────────────────────────────────────
+let standupOpen = false;
+
+document.getElementById('standup-toggle-btn').addEventListener('click', () => {
+  standupOpen = !standupOpen;
+  const panel = document.getElementById('standup-panel');
+  panel.style.display = standupOpen ? 'block' : 'none';
+  document.getElementById('standup-toggle-btn').style.color = standupOpen ? 'var(--accent-done)' : '';
+  if (standupOpen) { standupViewDate = todayStr(); renderStandup(); }
+});
+
+function renderStandup() {
+  const board = activeBoard();
+  if (!board) return;
+  const log = board.standupLog || {};
+  document.getElementById('standup-date').textContent = fmtDateLong(todayStr());
+  document.getElementById('standup-viewing-date').textContent = standupViewDate !== todayStr() ? 'Viewing: ' + fmtDateLong(standupViewDate) : '';
+  const entry = log[standupViewDate] || {};
+  document.getElementById('standup-yesterday').value = entry.yesterday || '';
+  document.getElementById('standup-today').value = entry.today || '';
+  document.getElementById('standup-blockers').value = entry.blockers || '';
+  const isToday = standupViewDate === todayStr();
+  ['standup-yesterday','standup-today','standup-blockers','standup-save'].forEach(id => {
+    document.getElementById(id).disabled = !isToday;
+  });
+  // Prev/next
+  const dates = Object.keys(log).sort();
+  const idx = dates.indexOf(standupViewDate);
+  document.getElementById('standup-prev').disabled = dates.length === 0 || standupViewDate <= (dates[0] || todayStr());
+  document.getElementById('standup-next').disabled = standupViewDate >= todayStr();
+}
+
+document.getElementById('standup-save').addEventListener('click', async () => {
+  const board = activeBoard();
+  if (!board) return;
+  if (!board.standupLog) board.standupLog = {};
+  board.standupLog[todayStr()] = {
+    yesterday: document.getElementById('standup-yesterday').value,
+    today: document.getElementById('standup-today').value,
+    blockers: document.getElementById('standup-blockers').value
+  };
+  renderStandup();
+  save();
+});
+
+document.getElementById('standup-prev').addEventListener('click', () => {
+  const board = activeBoard();
+  if (!board) return;
+  const dates = Object.keys(board.standupLog || {}).sort();
+  const idx = dates.indexOf(standupViewDate);
+  if (idx > 0) standupViewDate = dates[idx - 1];
+  else if (dates.length && standupViewDate > dates[0]) standupViewDate = dates[dates.length - 1];
+  renderStandup();
+});
+
+document.getElementById('standup-next').addEventListener('click', () => {
+  const board = activeBoard();
+  if (!board) return;
+  const dates = Object.keys(board.standupLog || {}).sort();
+  const idx = dates.indexOf(standupViewDate);
+  if (idx < dates.length - 1) standupViewDate = dates[idx + 1];
+  else if (standupViewDate < todayStr()) standupViewDate = todayStr();
+  renderStandup();
+});
 
 // ── TABS ──────────────────────────────────────────────────────────────────
 function renderTabs() {
@@ -846,25 +773,18 @@ function renderTabs() {
     tab.dataset.boardId = board.id;
 
     const nameSpan = document.createElement('span');
-    nameSpan.className = 'tab-name';
-    nameSpan.textContent = board.name;
-
+    nameSpan.className = 'tab-name'; nameSpan.textContent = board.name;
     const renameInput = document.createElement('input');
-    renameInput.type = 'text';
-    renameInput.className = 'tab-rename-input';
-    renameInput.value = board.name;
-    renameInput.maxLength = 40;
+    renameInput.type = 'text'; renameInput.className = 'tab-rename-input';
+    renameInput.value = board.name; renameInput.maxLength = 60;
 
     nameSpan.addEventListener('dblclick', e => {
-      if (!isActive) return;
-      e.stopPropagation();
-      tab.classList.add('renaming');
-      renameInput.focus(); renameInput.select();
+      if (!isActive) return; e.stopPropagation();
+      tab.classList.add('renaming'); renameInput.focus(); renameInput.select();
     });
     renameInput.addEventListener('blur', async () => {
       board.name = renameInput.value.trim() || board.name;
-      tab.classList.remove('renaming');
-      nameSpan.textContent = board.name;
+      tab.classList.remove('renaming'); nameSpan.textContent = board.name;
       renderTabs();
       await syncBoard(board, false);
     });
@@ -876,58 +796,36 @@ function renderTabs() {
     renameInput.addEventListener('click', e => e.stopPropagation());
 
     const renameBtn = document.createElement('button');
-    renameBtn.className = 'tab-rename-btn';
-    renameBtn.innerHTML = '&#9998;';
-    renameBtn.title = 'Rename board';
+    renameBtn.className = 'tab-rename-btn'; renameBtn.innerHTML = '&#9998;'; renameBtn.title = 'Rename sprint';
     renameBtn.addEventListener('click', e => {
       e.stopPropagation();
       if (appState.activeBoardId !== board.id) {
-        snapshotActive();
-        appState.activeBoardId = board.id;
-        renderTabs(); renderBoard();
-        setTimeout(() => {
-          const t = document.querySelector(`.board-tab[data-board-id="${board.id}"]`);
-          if (t) t.querySelector('.tab-rename-btn').click();
-        }, 50);
+        snapshotActive(); appState.activeBoardId = board.id;
+        renderTabs(); renderBoard(); renderSprintHeader();
+        setTimeout(() => { const t = document.querySelector(`.board-tab[data-board-id="${board.id}"]`); if (t) t.querySelector('.tab-rename-btn').click(); }, 50);
         return;
       }
-      tab.classList.add('renaming');
-      renameInput.focus(); renameInput.select();
+      tab.classList.add('renaming'); renameInput.focus(); renameInput.select();
     });
 
     const delBtn = document.createElement('button');
-    delBtn.className = 'tab-del';
-    delBtn.innerHTML = '&#x2715;';
-    delBtn.title = 'Archive this board';
-    delBtn.addEventListener('click', async e => {
+    delBtn.className = 'tab-del'; delBtn.innerHTML = '&#x2715;'; delBtn.title = 'Archive this sprint';
+    delBtn.addEventListener('click', e => {
       e.stopPropagation();
-      if (appState.boards.length === 1) { alert('Create a new board before archiving this one.'); return; }
-      snapshotActive();
-      const archived = deepClone(board);
-      appState.boards = appState.boards.filter(b => b.id !== board.id);
-      if (appState.activeBoardId === board.id) appState.activeBoardId = appState.boards[0].id;
-      appState.archived.unshift(archived);
-      // Re-sort archived
-      appState.archived.sort((a, b) => {
-        const da = boardLastDoneDate(a), db = boardLastDoneDate(b);
-        if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
-        return db.localeCompare(da);
-      });
-      renderTabs(); renderBoard(); renderArchive();
-      await syncBoard(archived, true);
+      if (appState.boards.length === 1) { alert('Create a new sprint before archiving this one.'); return; }
+      retroArchiveTarget = board;
+      openRetroModal();
     });
 
     tab.appendChild(nameSpan); tab.appendChild(renameInput);
     tab.appendChild(renameBtn); tab.appendChild(delBtn);
-
     tab.addEventListener('click', () => {
       if (tab.classList.contains('renaming')) return;
       if (appState.activeBoardId === board.id) return;
-      snapshotActive();
-      appState.activeBoardId = board.id;
-      renderTabs(); renderBoard();
+      snapshotActive(); appState.activeBoardId = board.id;
+      renderTabs(); renderBoard(); renderSprintHeader();
+      if (standupOpen) renderStandup();
     });
-
     el.appendChild(tab);
   });
 }
@@ -935,12 +833,49 @@ function renderTabs() {
 async function syncBoard(board, archived) {
   try {
     setSyncStatus('syncing');
-    const session = JSON.parse(localStorage.getItem('gb_session') || '{}');
-    await updateBoardInDB(session.access_token, board, session.user?.id, archived);
-    setSyncStatus('synced');
-    setTimeout(() => setSyncStatus(''), 2000);
+    await updateBoardInDB(getToken(), board, getUserId(), archived);
+    setSyncStatus('synced'); setTimeout(() => setSyncStatus(''), 2000);
   } catch(e) { setSyncStatus('error'); console.error(e); }
 }
+
+// ── RETROSPECTIVE MODAL ────────────────────────────────────────────────────
+function openRetroModal() {
+  document.getElementById('retro-well').value = '';
+  document.getElementById('retro-bad').value = '';
+  document.getElementById('retro-diff').value = '';
+  document.getElementById('modal-retro').classList.add('open');
+  setTimeout(() => document.getElementById('retro-well').focus(), 50);
+}
+
+async function doArchive(retro) {
+  const board = retroArchiveTarget;
+  if (!board) return;
+  snapshotActive();
+  if (retro) board.retro = retro;
+  appState.boards = appState.boards.filter(b => b.id !== board.id);
+  if (appState.activeBoardId === board.id) appState.activeBoardId = appState.boards[0].id;
+  appState.archived.unshift(deepClone(board));
+  appState.archived.sort((a, b) => {
+    const da = boardLastDoneDate(a), db = boardLastDoneDate(b);
+    if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
+    return db.localeCompare(da);
+  });
+  document.getElementById('modal-retro').classList.remove('open');
+  renderTabs(); renderBoard(); renderSprintHeader(); renderArchive();
+  if (standupOpen) renderStandup();
+  await syncBoard(board, true);
+  retroArchiveTarget = null;
+}
+
+document.getElementById('retro-save').addEventListener('click', () => {
+  doArchive({
+    well: document.getElementById('retro-well').value,
+    bad: document.getElementById('retro-bad').value,
+    diff: document.getElementById('retro-diff').value
+  });
+});
+document.getElementById('retro-skip').addEventListener('click', () => doArchive(null));
+document.getElementById('modal-retro').addEventListener('click', e => { if (e.target === document.getElementById('modal-retro')) document.getElementById('modal-retro').classList.remove('open'); });
 
 // ── BOARD ─────────────────────────────────────────────────────────────────
 function renderBoard() {
@@ -951,14 +886,10 @@ function renderBoard() {
 
   COLS.forEach(col => {
     const column = document.createElement('div');
-    column.className = 'column';
-    column.dataset.col = col;
+    column.className = 'column'; column.dataset.col = col;
     column.innerHTML = `
       <div class="col-header">
-        <div class="col-title-group">
-          <div class="col-dot"></div>
-          <span class="col-title">${COL_LABELS[col]}</span>
-        </div>
+        <div class="col-title-group"><div class="col-dot"></div><span class="col-title">${COL_LABELS[col]}</span></div>
         <span class="col-badge" id="badge-${col}">0</span>
       </div>
       <div class="cards-container is-empty" id="col-${col}" data-col="${col}"></div>
@@ -970,15 +901,9 @@ function renderBoard() {
         </div>
       </div>`;
     boardEl.appendChild(column);
-
     const container = column.querySelector('#col-' + col);
-    setupDrop(container);
-    setupAddBtn(col);
-    (board.cards[col] || []).forEach(c => {
-      const card = makeCard(c);
-      card.classList.remove('card-enter');
-      container.appendChild(card);
-    });
+    setupDrop(container); setupAddBtn(col);
+    (board.cards[col] || []).forEach(c => { const card = makeCard(c); card.classList.remove('card-enter'); container.appendChild(card); });
   });
 
   updateCounts();
@@ -990,139 +915,57 @@ function pillClass(dueDate, col) {
   const due = new Date(dueDate + 'T00:00:00');
   const now = new Date(); now.setHours(0,0,0,0);
   const diff = (due - now) / 86400000;
-  if (diff < 0) return 'overdue';
-  if (diff <= 3) return 'soon';
-  return '';
+  if (diff < 0) return 'overdue'; if (diff <= 3) return 'soon'; return '';
 }
 
 function makeCard(data) {
   const { id, text, dueDate='', completedDate='', notes='', checklist=[] } = data;
-
   const card = document.createElement('div');
-  card.className = 'card card-enter';
-  card.dataset.id = id;
-  card.dataset.dueDate = dueDate;
-  card.dataset.completedDate = completedDate;
-  card.draggable = true;
+  card.className = 'card card-enter'; card.dataset.id = id;
+  card.dataset.dueDate = dueDate; card.dataset.completedDate = completedDate; card.draggable = true;
 
-  const top = document.createElement('div');
-  top.className = 'card-top';
+  const top = document.createElement('div'); top.className = 'card-top';
+  const textEl = document.createElement('div'); textEl.className = 'card-text'; textEl.textContent = text; textEl.title = 'Double-click to edit';
+  textEl.addEventListener('dblclick', () => { textEl.contentEditable = 'true'; card.draggable = false; textEl.focus(); const r = document.createRange(); r.selectNodeContents(textEl); window.getSelection().removeAllRanges(); window.getSelection().addRange(r); });
+  textEl.addEventListener('blur', () => { textEl.contentEditable = 'false'; card.draggable = true; if (!textEl.textContent.trim()) card.remove(); save(); });
+  textEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); textEl.blur(); } if (e.key === 'Escape') textEl.blur(); });
 
-  const textEl = document.createElement('div');
-  textEl.className = 'card-text';
-  textEl.textContent = text;
-  textEl.title = 'Double-click to edit';
-  textEl.addEventListener('dblclick', () => {
-    textEl.contentEditable = 'true'; card.draggable = false; textEl.focus();
-    const r = document.createRange(); r.selectNodeContents(textEl);
-    window.getSelection().removeAllRanges(); window.getSelection().addRange(r);
-  });
-  textEl.addEventListener('blur', () => {
-    textEl.contentEditable = 'false'; card.draggable = true;
-    if (!textEl.textContent.trim()) card.remove();
-    save();
-  });
-  textEl.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); textEl.blur(); }
-    if (e.key === 'Escape') textEl.blur();
-  });
+  const actions = document.createElement('div'); actions.className = 'card-actions';
+  const expandBtn = document.createElement('button'); expandBtn.className = 'card-icon-btn expand-btn'; expandBtn.title = 'Notes & checklist'; expandBtn.innerHTML = '&#9776;';
+  expandBtn.addEventListener('click', e => { e.stopPropagation(); expandSection.classList.toggle('open'); expandBtn.style.opacity = expandSection.classList.contains('open') ? '1' : ''; if (expandSection.classList.contains('open')) notesInput.focus(); });
+  const delBtn = document.createElement('button'); delBtn.className = 'card-icon-btn delete'; delBtn.innerHTML = '&#x2715;'; delBtn.title = 'Delete card';
+  delBtn.addEventListener('click', () => { card.style.transition = 'opacity 0.15s, transform 0.15s'; card.style.opacity = '0'; card.style.transform = 'scale(0.95)'; setTimeout(() => { card.remove(); save(); }, 150); });
+  actions.appendChild(expandBtn); actions.appendChild(delBtn); top.appendChild(textEl); top.appendChild(actions); card.appendChild(top);
 
-  const actions = document.createElement('div');
-  actions.className = 'card-actions';
-
-  const expandBtn = document.createElement('button');
-  expandBtn.className = 'card-icon-btn expand-btn';
-  expandBtn.title = 'Notes & checklist';
-  expandBtn.innerHTML = '&#9776;';
-  expandBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    expandSection.classList.toggle('open');
-    expandBtn.style.opacity = expandSection.classList.contains('open') ? '1' : '';
-    if (expandSection.classList.contains('open')) notesInput.focus();
-  });
-
-  const delBtn = document.createElement('button');
-  delBtn.className = 'card-icon-btn delete';
-  delBtn.innerHTML = '&#x2715;';
-  delBtn.title = 'Delete card';
-  delBtn.addEventListener('click', () => {
-    card.style.transition = 'opacity 0.15s, transform 0.15s';
-    card.style.opacity = '0'; card.style.transform = 'scale(0.95)';
-    setTimeout(() => { card.remove(); save(); }, 150);
-  });
-
-  actions.appendChild(expandBtn); actions.appendChild(delBtn);
-  top.appendChild(textEl); top.appendChild(actions);
-  card.appendChild(top);
-
-  // Meta row
-  const meta = document.createElement('div');
-  meta.className = 'card-meta';
-
-  const duePill = document.createElement('span');
-  duePill.className = 'date-pill';
-
-  const doneWrap = document.createElement('div');
-  doneWrap.className = 'due-input-wrap done-date-wrap';
-  doneWrap.style.display = 'none';
-  const doneLabel = document.createElement('span');
-  doneLabel.className = 'due-label';
-  doneLabel.textContent = 'done';
-  const doneInput = document.createElement('input');
-  doneInput.type = 'date'; doneInput.className = 'due-input done-date-input';
-  doneInput.value = completedDate; doneInput.title = 'Edit completion date';
-  doneInput.addEventListener('change', () => {
-    card.dataset.completedDate = doneInput.value;
-    refreshMeta(card, duePill, doneWrap, doneInput); save();
-  });
+  const meta = document.createElement('div'); meta.className = 'card-meta';
+  const duePill = document.createElement('span'); duePill.className = 'date-pill';
+  const doneWrap = document.createElement('div'); doneWrap.className = 'due-input-wrap done-date-wrap'; doneWrap.style.display = 'none';
+  const doneLabel = document.createElement('span'); doneLabel.className = 'due-label'; doneLabel.textContent = 'done';
+  const doneInput = document.createElement('input'); doneInput.type = 'date'; doneInput.className = 'due-input done-date-input'; doneInput.value = completedDate; doneInput.title = 'Edit completion date';
+  doneInput.addEventListener('change', () => { card.dataset.completedDate = doneInput.value; refreshMeta(card, duePill, doneWrap, doneInput); save(); });
   doneWrap.appendChild(doneLabel); doneWrap.appendChild(doneInput);
-
-  const dueWrap = document.createElement('div');
-  dueWrap.className = 'due-input-wrap';
-  const dueLabel = document.createElement('span');
-  dueLabel.className = 'due-label'; dueLabel.textContent = 'due';
-  const dueInput = document.createElement('input');
-  dueInput.type = 'date'; dueInput.className = 'due-input';
-  dueInput.value = dueDate; dueInput.title = 'Set due date';
-  dueInput.addEventListener('change', () => {
-    card.dataset.dueDate = dueInput.value;
-    refreshMeta(card, duePill, doneWrap, doneInput); save();
-  });
+  const dueWrap = document.createElement('div'); dueWrap.className = 'due-input-wrap';
+  const dueLabel = document.createElement('span'); dueLabel.className = 'due-label'; dueLabel.textContent = 'due';
+  const dueInput = document.createElement('input'); dueInput.type = 'date'; dueInput.className = 'due-input'; dueInput.value = dueDate; dueInput.title = 'Set due date';
+  dueInput.addEventListener('change', () => { card.dataset.dueDate = dueInput.value; refreshMeta(card, duePill, doneWrap, doneInput); save(); });
   dueWrap.appendChild(dueLabel); dueWrap.appendChild(dueInput);
-  meta.appendChild(duePill); meta.appendChild(doneWrap); meta.appendChild(dueWrap);
-  card.appendChild(meta);
+  meta.appendChild(duePill); meta.appendChild(doneWrap); meta.appendChild(dueWrap); card.appendChild(meta);
 
   // Expand section
-  const expandSection = document.createElement('div');
-  expandSection.className = 'card-expand';
+  const expandSection = document.createElement('div'); expandSection.className = 'card-expand';
   if (notes || checklist.length) expandSection.classList.add('open');
-
-  const notesSection = document.createElement('div');
-  notesSection.className = 'expand-section';
-  const notesLabel = document.createElement('span');
-  notesLabel.className = 'expand-label'; notesLabel.textContent = 'Notes';
-  const notesInput = document.createElement('textarea');
-  notesInput.className = 'notes-input'; notesInput.placeholder = 'Add notes...'; notesInput.value = notes;
+  const notesSection = document.createElement('div'); notesSection.className = 'expand-section';
+  const notesLabel = document.createElement('span'); notesLabel.className = 'expand-label'; notesLabel.textContent = 'Notes';
+  const notesInput = document.createElement('textarea'); notesInput.className = 'notes-input'; notesInput.placeholder = 'Add notes...'; notesInput.value = notes;
   notesInput.addEventListener('mousedown', e => e.stopPropagation());
-  notesInput.addEventListener('input', () => {
-    notesInput.style.height = 'auto';
-    notesInput.style.height = Math.min(notesInput.scrollHeight, 160) + 'px';
-    save();
-  });
+  notesInput.addEventListener('input', () => { notesInput.style.height='auto'; notesInput.style.height = Math.min(notesInput.scrollHeight, 160) + 'px'; save(); });
   notesInput.addEventListener('change', save);
-  notesSection.appendChild(notesLabel); notesSection.appendChild(notesInput);
-  expandSection.appendChild(notesSection);
+  notesSection.appendChild(notesLabel); notesSection.appendChild(notesInput); expandSection.appendChild(notesSection);
 
-  // Checklist
-  const checkSection = document.createElement('div');
-  checkSection.className = 'expand-section';
-  const checkLabel = document.createElement('span');
-  checkLabel.className = 'expand-label';
-  const checklistEl = document.createElement('div');
-  checklistEl.className = 'checklist';
-
-  const progressRow = document.createElement('div');
-  progressRow.className = 'checklist-progress';
+  const checkSection = document.createElement('div'); checkSection.className = 'expand-section';
+  const checkLabel = document.createElement('span'); checkLabel.className = 'expand-label';
+  const checklistEl = document.createElement('div'); checklistEl.className = 'checklist';
+  const progressRow = document.createElement('div'); progressRow.className = 'checklist-progress';
   const barTrack = document.createElement('div'); barTrack.className = 'checklist-bar-track';
   const barFill = document.createElement('div'); barFill.className = 'checklist-bar-fill'; barFill.style.width = '0%';
   const pctLabel = document.createElement('span'); pctLabel.className = 'checklist-progress-pct'; pctLabel.textContent = '0%';
@@ -1132,30 +975,24 @@ function makeCard(data) {
     const items = checklistEl.querySelectorAll('.checklist-item');
     const doneCount = checklistEl.querySelectorAll('.checklist-item.checked').length;
     const total = items.length;
-    if (total === 0) { checkLabel.textContent = 'Checklist'; progressRow.style.display = 'none'; }
+    if (!total) { checkLabel.textContent = 'Checklist'; progressRow.style.display = 'none'; }
     else {
       const pct = Math.round((doneCount / total) * 100);
       checkLabel.textContent = `Checklist (${doneCount}/${total})`;
       barFill.style.width = pct + '%';
       barFill.style.background = pct === 100 ? 'var(--accent-done)' : 'var(--accent-doing)';
-      pctLabel.textContent = pct + '%';
-      progressRow.style.display = '';
+      pctLabel.textContent = pct + '%'; progressRow.style.display = '';
     }
   }
 
   function makeCheckItem(itemText='', checked=false) {
-    const row = document.createElement('div');
-    row.className = 'checklist-item' + (checked ? ' checked' : '');
+    const row = document.createElement('div'); row.className = 'checklist-item' + (checked ? ' checked' : '');
     const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = checked;
     cb.addEventListener('change', () => { row.classList.toggle('checked', cb.checked); updateChecklistLabel(); save(); });
-    const textInput = document.createElement('input'); textInput.type = 'text';
-    textInput.className = 'checklist-item-text'; textInput.value = itemText; textInput.placeholder = 'Item...';
+    const textInput = document.createElement('input'); textInput.type = 'text'; textInput.className = 'checklist-item-text'; textInput.value = itemText; textInput.placeholder = 'Item...';
     textInput.addEventListener('mousedown', e => e.stopPropagation());
     textInput.addEventListener('change', save);
-    textInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') { e.preventDefault(); newItemInput.focus(); }
-      if (e.key === 'Backspace' && !textInput.value) { row.remove(); updateChecklistLabel(); save(); }
-    });
+    textInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); newItemInput.focus(); } if (e.key === 'Backspace' && !textInput.value) { row.remove(); updateChecklistLabel(); save(); } });
     const delItem = document.createElement('button'); delItem.className = 'checklist-item-del'; delItem.innerHTML = '&#x2715;';
     delItem.addEventListener('click', () => { row.remove(); updateChecklistLabel(); save(); });
     row.appendChild(cb); row.appendChild(textInput); row.appendChild(delItem);
@@ -1164,42 +1001,19 @@ function makeCard(data) {
 
   checklist.forEach(item => checklistEl.appendChild(makeCheckItem(item.text, item.checked)));
   updateChecklistLabel();
-
   const addCheckWrap = document.createElement('div'); addCheckWrap.className = 'add-checklist-item';
-  const newItemInput = document.createElement('input'); newItemInput.type = 'text';
-  newItemInput.className = 'checklist-new-input'; newItemInput.placeholder = 'Add item...';
+  const newItemInput = document.createElement('input'); newItemInput.type = 'text'; newItemInput.className = 'checklist-new-input'; newItemInput.placeholder = 'Add item...';
   newItemInput.addEventListener('mousedown', e => e.stopPropagation());
-  newItemInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && newItemInput.value.trim()) {
-      checklistEl.appendChild(makeCheckItem(newItemInput.value.trim()));
-      newItemInput.value = ''; updateChecklistLabel(); save();
-    }
-  });
+  newItemInput.addEventListener('keydown', e => { if (e.key === 'Enter' && newItemInput.value.trim()) { checklistEl.appendChild(makeCheckItem(newItemInput.value.trim())); newItemInput.value = ''; updateChecklistLabel(); save(); } });
   const addItemBtn = document.createElement('button'); addItemBtn.className = 'checklist-add-btn'; addItemBtn.textContent = '+';
-  addItemBtn.addEventListener('click', () => {
-    if (newItemInput.value.trim()) { checklistEl.appendChild(makeCheckItem(newItemInput.value.trim())); newItemInput.value = ''; updateChecklistLabel(); save(); }
-    else newItemInput.focus();
-  });
+  addItemBtn.addEventListener('click', () => { if (newItemInput.value.trim()) { checklistEl.appendChild(makeCheckItem(newItemInput.value.trim())); newItemInput.value = ''; updateChecklistLabel(); save(); } else newItemInput.focus(); });
   addCheckWrap.appendChild(newItemInput); addCheckWrap.appendChild(addItemBtn);
-  checkSection.appendChild(checkLabel); checkSection.appendChild(progressRow);
-  checkSection.appendChild(checklistEl); checkSection.appendChild(addCheckWrap);
-  expandSection.appendChild(checkSection);
-  card.appendChild(expandSection);
-
+  checkSection.appendChild(checkLabel); checkSection.appendChild(progressRow); checkSection.appendChild(checklistEl); checkSection.appendChild(addCheckWrap);
+  expandSection.appendChild(checkSection); card.appendChild(expandSection);
   if (notes || checklist.length) expandBtn.style.opacity = '1';
 
-  card.addEventListener('dragstart', e => {
-    draggedCard = card; e.dataTransfer.effectAllowed = 'move';
-    requestAnimationFrame(() => card.classList.add('dragging'));
-    placeholder = document.createElement('div');
-    placeholder.className = 'card drag-placeholder';
-    placeholder.style.height = card.offsetHeight + 'px';
-  });
-  card.addEventListener('dragend', () => {
-    card.classList.remove('dragging');
-    if (placeholder && placeholder.parentNode) placeholder.remove();
-    draggedCard = null; placeholder = null; save();
-  });
+  card.addEventListener('dragstart', e => { draggedCard = card; e.dataTransfer.effectAllowed = 'move'; requestAnimationFrame(() => card.classList.add('dragging')); placeholder = document.createElement('div'); placeholder.className = 'card drag-placeholder'; placeholder.style.height = card.offsetHeight + 'px'; });
+  card.addEventListener('dragend', () => { card.classList.remove('dragging'); if (placeholder && placeholder.parentNode) placeholder.remove(); draggedCard = null; placeholder = null; save(); });
 
   refreshMeta(card, duePill, doneWrap, doneInput);
   return card;
@@ -1208,34 +1022,14 @@ function makeCard(data) {
 function refreshMeta(card, duePill, doneWrap, doneInput) {
   const container = card.closest('.cards-container');
   const col = container ? container.dataset.col : 'todo';
-  const due = card.dataset.dueDate;
-  const done = card.dataset.completedDate;
-
-  if (due && col !== 'done') {
-    const cls = pillClass(due, col);
-    duePill.className = 'date-pill' + (cls ? ' ' + cls : '');
-    duePill.textContent = 'due ' + fmtDate(due);
-    duePill.style.display = '';
-  } else { duePill.style.display = 'none'; }
-
-  if (col === 'done') {
-    doneWrap.style.display = '';
-    if (!done) { card.dataset.completedDate = todayStr(); doneInput.value = todayStr(); }
-    else doneInput.value = done;
-  } else {
-    doneWrap.style.display = 'none';
-  }
+  const due = card.dataset.dueDate; const done = card.dataset.completedDate;
+  if (due && col !== 'done') { const cls = pillClass(due, col); duePill.className = 'date-pill' + (cls ? ' ' + cls : ''); duePill.textContent = 'due ' + fmtDate(due); duePill.style.display = ''; } else { duePill.style.display = 'none'; }
+  if (col === 'done') { doneWrap.style.display = ''; if (!done) { card.dataset.completedDate = todayStr(); doneInput.value = todayStr(); } else doneInput.value = done; } else { doneWrap.style.display = 'none'; }
 }
 
 // ── DRAG & DROP ───────────────────────────────────────────────────────────
 function setupDrop(container) {
-  container.addEventListener('dragover', e => {
-    e.preventDefault();
-    if (!draggedCard || !placeholder) return;
-    const after = dragAfterEl(container, e.clientY);
-    if (after) container.insertBefore(placeholder, after);
-    else container.appendChild(placeholder);
-  });
+  container.addEventListener('dragover', e => { e.preventDefault(); if (!draggedCard || !placeholder) return; const after = dragAfterEl(container, e.clientY); if (after) container.insertBefore(placeholder, after); else container.appendChild(placeholder); });
   container.addEventListener('dragenter', e => { e.preventDefault(); container.classList.add('drag-over'); });
   container.addEventListener('dragleave', e => { if (!container.contains(e.relatedTarget)) container.classList.remove('drag-over'); });
   container.addEventListener('drop', e => {
@@ -1255,17 +1049,12 @@ function setupDrop(container) {
 
 function dragAfterEl(container, y) {
   const els = [...container.querySelectorAll('.card:not(.dragging):not(.drag-placeholder)')];
-  return els.reduce((closest, child) => {
-    const box = child.getBoundingClientRect();
-    const offset = y - box.top - box.height / 2;
-    if (offset < 0 && offset > closest.offset) return { offset, element: child };
-    return closest;
-  }, { offset: Number.NEGATIVE_INFINITY }).element;
+  return els.reduce((closest, child) => { const box = child.getBoundingClientRect(); const offset = y - box.top - box.height / 2; if (offset < 0 && offset > closest.offset) return { offset, element: child }; return closest; }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
 // ── ADD CARD ──────────────────────────────────────────────────────────────
 function setupAddBtn(col) {
-  const btn   = document.querySelector(`.add-btn[data-col="${col}"]`);
+  const btn = document.querySelector(`.add-btn[data-col="${col}"]`);
   const input = document.querySelector(`.add-input[data-col="${col}"]`);
   const submit = () => {
     const trimmed = input.value.trim(); if (!trimmed) return;
@@ -1276,79 +1065,79 @@ function setupAddBtn(col) {
   };
   btn.addEventListener('click', submit);
   input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); } });
-  input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 96) + 'px'; });
+  input.addEventListener('input', () => { input.style.height='auto'; input.style.height = Math.min(input.scrollHeight, 96) + 'px'; });
 }
 
 // ── COUNTS ────────────────────────────────────────────────────────────────
 function updateCounts() {
   COLS.forEach(col => {
-    const container = document.getElementById('col-' + col);
-    if (!container) return;
+    const container = document.getElementById('col-' + col); if (!container) return;
     const n = container.querySelectorAll('.card').length;
-    const badge = document.getElementById('badge-' + col);
-    if (badge) badge.textContent = n;
+    const badge = document.getElementById('badge-' + col); if (badge) badge.textContent = n;
     container.classList.toggle('is-empty', n === 0);
   });
 }
 
-// ── ARCHIVE ───────────────────────────────────────────────────────────────
-function boardLastDoneDate(board) {
-  const doneCards = board.cards && board.cards.done ? board.cards.done : [];
-  const dates = doneCards.map(c => c.completedDate || '').filter(Boolean).sort().reverse();
-  return dates[0] || '';
-}
-
+// ── ARCHIVE ────────────────────────────────────────────────────────────────
 function renderArchive() {
   const list = document.getElementById('archive-list');
   list.innerHTML = '';
-  if (!appState.archived.length) {
-    list.innerHTML = '<div class="archive-empty">No archived boards</div>';
-    return;
-  }
-  // Already sorted on load and on archive action
+  if (!appState.archived.length) { list.innerHTML = '<div class="archive-empty">No archived sprints</div>'; return; }
   appState.archived.forEach((board, idx) => {
-    const item = document.createElement('div');
-    item.className = 'archive-item';
+    const item = document.createElement('div'); item.className = 'archive-item';
+    const header = document.createElement('div'); header.className = 'archive-item-header';
 
-    const nameCol = document.createElement('div');
-    nameCol.style.cssText = 'display:flex;flex-direction:column;gap:3px;flex:1;min-width:0;';
-    const name = document.createElement('span');
-    name.className = 'archive-item-name'; name.textContent = board.name;
+    const nameCol = document.createElement('div'); nameCol.className = 'archive-item-name-col';
+    const name = document.createElement('span'); name.className = 'archive-item-name'; name.textContent = board.name;
     const lastDone = boardLastDoneDate(board);
-    const dateLine = document.createElement('span');
-    dateLine.style.cssText = 'font-size:10px;color:var(--text-muted);';
+    const dateLine = document.createElement('span'); dateLine.className = 'archive-item-date';
     dateLine.textContent = lastDone ? 'last done ' + fmtDate(lastDone) : 'no completed cards';
     nameCol.appendChild(name); nameCol.appendChild(dateLine);
 
-    const acts = document.createElement('div');
-    acts.className = 'archive-item-actions';
-
-    const restoreBtn = document.createElement('button');
-    restoreBtn.className = 'archive-action-btn';
-    restoreBtn.textContent = 'Restore';
-    restoreBtn.addEventListener('click', async () => {
-      appState.boards.push(board);
-      appState.archived.splice(idx, 1);
+    const acts = document.createElement('div'); acts.className = 'archive-item-actions';
+    const restoreBtn = document.createElement('button'); restoreBtn.className = 'archive-action-btn'; restoreBtn.textContent = 'Restore';
+    restoreBtn.addEventListener('click', async e => {
+      e.stopPropagation();
+      appState.boards.push(board); appState.archived.splice(idx, 1);
       appState.activeBoardId = board.id;
-      renderTabs(); renderBoard(); renderArchive();
+      renderTabs(); renderBoard(); renderSprintHeader(); renderArchive();
+      if (standupOpen) renderStandup();
       await syncBoard(board, false);
     });
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'archive-action-btn danger';
-    deleteBtn.textContent = 'Delete';
-    deleteBtn.addEventListener('click', async () => {
+    const deleteBtn = document.createElement('button'); deleteBtn.className = 'archive-action-btn danger'; deleteBtn.textContent = 'Delete';
+    deleteBtn.addEventListener('click', async e => {
+      e.stopPropagation();
       if (!confirm(`Permanently delete "${board.name}"?`)) return;
-      appState.archived.splice(idx, 1);
-      renderArchive();
-      try {
-        const session = JSON.parse(localStorage.getItem('gb_session') || '{}');
-        await deleteBoardFromDB(session.access_token, board.id);
-      } catch(e) { console.error(e); }
+      appState.archived.splice(idx, 1); renderArchive();
+      try { await deleteBoardFromDB(getToken(), board.id); } catch(e) { console.error(e); }
+    });
+    acts.appendChild(restoreBtn); acts.appendChild(deleteBtn);
+    header.appendChild(nameCol); header.appendChild(acts);
+
+    // Expandable retro section
+    const retroSection = document.createElement('div'); retroSection.className = 'archive-retro';
+    if (board.retro) {
+      retroSection.innerHTML = `<div class="archive-retro-title">Sprint retrospective</div>`;
+      [['What went well', board.retro.well], ['What didn\'t go well', board.retro.bad], ['What I\'ll do differently', board.retro.diff]].forEach(([label, val]) => {
+        const ri = document.createElement('div'); ri.className = 'retro-item';
+        ri.innerHTML = `<div class="retro-item-label">${label}</div>`;
+        const tv = document.createElement('div');
+        tv.className = val && val.trim() ? 'retro-item-text' : 'retro-item-empty';
+        tv.textContent = val && val.trim() ? val : 'Nothing written.';
+        ri.appendChild(tv); retroSection.appendChild(ri);
+      });
+    } else {
+      retroSection.innerHTML = '<div class="retro-item-empty" style="font-size:11px;">No retrospective recorded.</div>';
+    }
+
+    // Toggle retro on header click
+    let retroOpen = false;
+    header.addEventListener('click', () => {
+      retroOpen = !retroOpen;
+      retroSection.classList.toggle('open', retroOpen);
     });
 
-    acts.appendChild(restoreBtn); acts.appendChild(deleteBtn);
-    item.appendChild(nameCol); item.appendChild(acts);
+    item.appendChild(header); item.appendChild(retroSection);
     list.appendChild(item);
   });
 }
@@ -1358,51 +1147,42 @@ document.getElementById('archive-toggle-btn').addEventListener('click', () => {
   drawer.classList.toggle('open');
   if (drawer.classList.contains('open')) renderArchive();
 });
-document.getElementById('archive-close').addEventListener('click', () => {
-  document.getElementById('archive-drawer').classList.remove('open');
-});
+document.getElementById('archive-close').addEventListener('click', () => { document.getElementById('archive-drawer').classList.remove('open'); });
 
-// ── NEW BOARD MODAL ───────────────────────────────────────────────────────
+// ── NEW SPRINT MODAL ───────────────────────────────────────────────────────
 const modalNew = document.getElementById('modal-new');
 const newBoardNameInput = document.getElementById('new-board-name');
 
 document.getElementById('new-board-btn').addEventListener('click', () => {
-  newBoardNameInput.value = '';
   const cur = activeBoard();
-  document.getElementById('current-board-name-label').textContent = cur ? cur.name : 'current board';
+  const nextNum = appState.boards.length + appState.archived.length + 1;
+  newBoardNameInput.value = `Sprint ${nextNum}`;
+  document.getElementById('current-board-name-label').textContent = cur ? cur.name : 'current sprint';
   modalNew.classList.add('open');
-  setTimeout(() => newBoardNameInput.focus(), 50);
+  setTimeout(() => { newBoardNameInput.focus(); newBoardNameInput.select(); }, 50);
 });
 document.getElementById('modal-cancel').addEventListener('click', () => modalNew.classList.remove('open'));
 modalNew.addEventListener('click', e => { if (e.target === modalNew) modalNew.classList.remove('open'); });
 
 async function createBoard(copyCards) {
-  const name = newBoardNameInput.value.trim() || 'New Board';
+  const name = newBoardNameInput.value.trim() || 'New Sprint';
   snapshotActive();
   const cur = activeBoard();
-  let cards = { todo:[], doing:[], done:[] };
-  if (copyCards && cur) {
-    COLS.forEach(col => { cards[col] = deepClone(cur.cards[col] || []).map(c => ({ ...c, id: genId() })); });
-  }
   const id = genId();
-  const board = { id, name, cards };
-  appState.boards.push(board);
-  appState.activeBoardId = id;
+  const board = newBoardObj(id, name);
+  if (copyCards && cur) {
+    COLS.forEach(col => { board.cards[col] = deepClone(cur.cards[col] || []).map(c => ({ ...c, id: genId() })); });
+  }
+  appState.boards.push(board); appState.activeBoardId = id;
   modalNew.classList.remove('open');
-  renderTabs(); renderBoard();
-  try {
-    const session = JSON.parse(localStorage.getItem('gb_session') || '{}');
-    await upsertBoard(session.access_token, board, session.user?.id);
-    setSyncStatus('synced'); setTimeout(() => setSyncStatus(''), 2000);
-  } catch(e) { setSyncStatus('error'); console.error(e); }
+  renderTabs(); renderBoard(); renderSprintHeader();
+  if (standupOpen) renderStandup();
+  try { await upsertBoardToDB(getToken(), board, getUserId()); setSyncStatus('synced'); setTimeout(() => setSyncStatus(''), 2000); } catch(e) { setSyncStatus('error'); console.error(e); }
 }
 
 document.getElementById('modal-blank').addEventListener('click', () => createBoard(false));
 document.getElementById('modal-copy').addEventListener('click', () => createBoard(true));
-newBoardNameInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') createBoard(false);
-  if (e.key === 'Escape') modalNew.classList.remove('open');
-});
+newBoardNameInput.addEventListener('keydown', e => { if (e.key === 'Enter') createBoard(false); if (e.key === 'Escape') modalNew.classList.remove('open'); });
 
 // ── BOOT ──────────────────────────────────────────────────────────────────
 bootstrap();
