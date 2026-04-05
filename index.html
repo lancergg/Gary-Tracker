@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gary's Tracker</title>
+<title>Gary's Board</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,27 +39,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #1a1814;
-    --surface: #211f1a;
-    --col-bg: #282520;
-    --col-border: #3a3630;
-    --card-bg: #2e2b25;
-    --card-border: #3d3930;
+    --bg: #1a1814; --surface: #211f1a; --col-bg: #282520;
+    --col-border: #3a3630; --card-bg: #2e2b25; --card-border: #3d3930;
     --card-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    --text-primary: #f0ece4;
-    --text-secondary: #a8a198;
-    --text-muted: #6b6560;
-    --accent-todo: #7a9ab8;
-    --accent-doing: #c49a5c;
-    --accent-done: #6aad82;
-    --accent-todo-light: #1e2a38;
-    --accent-doing-light: #2e2418;
-    --accent-done-light: #162518;
-    --delete-color: #e07070;
-    --overdue-color: #e07070;
-    --overdue-light: #2e1818;
-    --soon-color: #c49a5c;
-    --soon-light: #2e2418;
+    --text-primary: #f0ece4; --text-secondary: #a8a198; --text-muted: #6b6560;
+    --accent-todo: #7a9ab8; --accent-doing: #c49a5c; --accent-done: #6aad82;
+    --accent-todo-light: #1e2a38; --accent-doing-light: #2e2418; --accent-done-light: #162518;
+    --delete-color: #e07070; --overdue-color: #e07070; --overdue-light: #2e1818;
+    --soon-color: #c49a5c; --soon-light: #2e2418;
   }
 }
 
@@ -72,17 +59,106 @@ body {
   flex-direction: column;
 }
 
+/* ── LOGIN SCREEN ── */
+.login-screen {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.login-card {
+  background: var(--surface);
+  border: 1px solid var(--col-border);
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+  width: 340px;
+  max-width: 100%;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+.login-brand {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+}
+.login-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+.login-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+  display: block;
+}
+.login-input {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  color: var(--text-primary);
+  outline: none;
+  margin-bottom: 1rem;
+  transition: border-color var(--transition);
+}
+.login-input:focus { border-color: var(--text-secondary); }
+.login-btn {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--text-primary);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+.login-btn:hover { opacity: 0.85; }
+.login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.login-msg {
+  font-size: 11px;
+  margin-top: 0.75rem;
+  text-align: center;
+  min-height: 16px;
+  color: var(--text-secondary);
+}
+.login-msg.error { color: var(--delete-color); }
+.login-msg.success { color: var(--accent-done); }
+
+/* ── SYNC STATUS ── */
+.sync-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+.sync-dot.syncing { background: var(--accent-doing); }
+.sync-dot.synced  { background: var(--accent-done); }
+.sync-dot.error   { background: var(--delete-color); }
+
 /* ── TOP NAV ── */
 .top-nav {
-  display: flex;
+  display: none;
   align-items: stretch;
   padding: 0 1.25rem;
   border-bottom: 1px solid var(--col-border);
   background: var(--surface);
   min-height: 52px;
   flex-shrink: 0;
-  gap: 0;
 }
+.top-nav.visible { display: flex; }
 
 .brand {
   font-family: var(--font-display);
@@ -96,19 +172,18 @@ body {
   flex-shrink: 0;
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 .board-tabs {
   display: flex;
   align-items: stretch;
-  gap: 0;
   flex: 1;
   overflow-x: auto;
   scrollbar-width: none;
 }
 .board-tabs::-webkit-scrollbar { display: none; }
 
-/* FIX #1: entire tab is the click target */
 .board-tab {
   display: flex;
   align-items: center;
@@ -123,21 +198,14 @@ body {
   cursor: pointer;
   white-space: nowrap;
   transition: color var(--transition), border-color var(--transition);
-  min-width: 0;
   position: relative;
 }
 .board-tab:hover { color: var(--text-primary); }
 .board-tab.active { color: var(--text-primary); border-bottom-color: var(--text-primary); }
 
-.tab-name {
-  pointer-events: none; /* tab click goes to button, not span */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 140px;
-}
+.tab-name { pointer-events: none; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
 .board-tab.active .tab-name { pointer-events: auto; }
 
-/* Hidden real input for renaming */
 .tab-rename-input {
   display: none;
   font-family: var(--font-mono);
@@ -152,65 +220,42 @@ body {
 .board-tab.renaming .tab-rename-input { display: block; }
 
 .tab-rename-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--text-muted);
-  font-size: 11px;
-  padding: 0 2px;
-  opacity: 0;
-  transition: opacity var(--transition), color var(--transition);
-  line-height: 1;
-  flex-shrink: 0;
-  pointer-events: auto;
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted); font-size: 11px; padding: 0 2px;
+  opacity: 0; transition: opacity var(--transition), color var(--transition);
+  line-height: 1; flex-shrink: 0; pointer-events: auto;
 }
 .board-tab:hover .tab-rename-btn { opacity: 1; }
 .tab-rename-btn:hover { color: var(--text-primary); }
 
 .tab-del {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--text-muted);
-  font-size: 11px;
-  padding: 0;
-  opacity: 0;
-  transition: opacity var(--transition), color var(--transition);
-  line-height: 1;
-  flex-shrink: 0;
-  pointer-events: auto;
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted); font-size: 11px; padding: 0;
+  opacity: 0; transition: opacity var(--transition), color var(--transition);
+  line-height: 1; flex-shrink: 0; pointer-events: auto;
 }
 .board-tab:hover .tab-del { opacity: 1; }
 .tab-del:hover { color: var(--delete-color); }
 
 .nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-shrink: 0;
-  margin-left: 8px;
+  display: flex; align-items: center; gap: 4px;
+  flex-shrink: 0; margin-left: 8px;
 }
-
 .nav-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--text-muted);
-  font-size: 11px;
-  padding: 5px 8px;
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted); font-size: 11px; padding: 5px 8px;
   border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  display: flex; align-items: center; gap: 4px;
   transition: color var(--transition), background var(--transition);
-  white-space: nowrap;
-  font-family: var(--font-mono);
+  white-space: nowrap; font-family: var(--font-mono);
 }
 .nav-btn:hover { color: var(--text-primary); background: var(--col-bg); }
+.nav-btn.signout { color: var(--text-muted); }
+.nav-btn.signout:hover { color: var(--delete-color); }
 
 /* ── BOARD ── */
 .board {
-  display: grid;
+  display: none;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
   padding: 1.5rem 2rem 2.5rem;
@@ -218,23 +263,19 @@ body {
   align-content: start;
   overflow-y: auto;
 }
+.board.visible { display: grid; }
 
 /* ── COLUMNS ── */
 .column {
   background: var(--col-bg);
   border: 1px solid var(--col-border);
   border-radius: var(--radius);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-height: 400px;
+  display: flex; flex-direction: column;
+  overflow: hidden; min-height: 400px;
 }
-
 .col-header {
   padding: 1rem 1.25rem 0.875rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
   border-bottom: 1px solid var(--col-border);
 }
 .col-title-group { display: flex; align-items: center; gap: 10px; }
@@ -249,11 +290,8 @@ body {
 [data-col="done"] .col-badge { background: var(--accent-done-light); color: var(--accent-done); }
 
 .cards-container {
-  flex: 1;
-  padding: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  flex: 1; padding: 0.75rem;
+  display: flex; flex-direction: column; gap: 0.5rem;
   overflow-y: auto;
 }
 .cards-container.drag-over { background: rgba(0,0,0,0.03); }
@@ -272,28 +310,19 @@ body {
 .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.05); transform: translateY(-1px); }
 .card.dragging { opacity: 0.4; transform: scale(0.97); box-shadow: none; }
 .card.drag-placeholder {
-  border: 1.5px dashed var(--col-border);
-  background: transparent; box-shadow: none;
-  pointer-events: none; min-height: 60px;
+  border: 1.5px dashed var(--col-border); background: transparent;
+  box-shadow: none; pointer-events: none; min-height: 60px;
 }
-
 .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
-
-.card-text {
-  font-size: 13px; line-height: 1.55;
-  color: var(--text-primary); flex: 1; word-break: break-word;
-}
+.card-text { font-size: 13px; line-height: 1.55; color: var(--text-primary); flex: 1; word-break: break-word; }
 .card-text[contenteditable="true"] { outline: none; cursor: text; }
-
 .card-actions { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
-
 .card-icon-btn {
   background: none; border: none; cursor: pointer;
   color: var(--text-muted); padding: 2px;
   width: 20px; height: 20px;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 3px; flex-shrink: 0;
-  opacity: 0;
+  border-radius: 3px; flex-shrink: 0; opacity: 0;
   transition: opacity var(--transition), color var(--transition), background var(--transition);
   font-size: 12px;
 }
@@ -301,21 +330,17 @@ body {
 .card-icon-btn:hover { color: var(--text-primary); background: var(--col-bg); }
 .card-icon-btn.delete:hover { color: var(--delete-color); background: rgba(180,60,60,0.08); }
 
-/* ── CARD META (dates) ── */
+/* ── CARD META ── */
 .card-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; align-items: center; }
-
 .date-pill {
   display: inline-flex; align-items: center;
   font-size: 10px; letter-spacing: 0.03em;
   padding: 2px 7px; border-radius: 20px;
   border: 1px solid var(--col-border);
-  color: var(--text-secondary); background: var(--col-bg);
-  white-space: nowrap;
+  color: var(--text-secondary); background: var(--col-bg); white-space: nowrap;
 }
 .date-pill.overdue { background: var(--overdue-light); color: var(--overdue-color); border-color: var(--overdue-color); }
 .date-pill.soon { background: var(--soon-light); color: var(--soon-color); border-color: var(--soon-color); }
-.date-pill.done-stamp { background: var(--accent-done-light); color: var(--accent-done); border-color: var(--accent-done); }
-
 .due-input-wrap { display: flex; align-items: center; gap: 5px; }
 .due-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.04em; }
 .due-input {
@@ -327,87 +352,41 @@ body {
 }
 .due-input:focus { border-color: var(--text-secondary); }
 
-/* ── CARD EXPAND (notes + checklist) ── */
-.card-expand {
-  display: none;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid var(--card-border);
-}
+/* ── CARD EXPAND ── */
+.card-expand { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--card-border); }
 .card-expand.open { display: block; }
-
 .expand-section { margin-bottom: 10px; }
 .expand-section:last-child { margin-bottom: 0; }
-
-.expand-label {
-  font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--text-muted); margin-bottom: 5px; display: block;
-}
-
+.expand-label { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; display: block; }
 .notes-input {
-  width: 100%;
-  font-family: var(--font-mono); font-size: 12px;
+  width: 100%; font-family: var(--font-mono); font-size: 12px;
   background: var(--col-bg); border: 1px solid var(--col-border);
   border-radius: var(--radius-sm); padding: 7px 9px;
   color: var(--text-primary); resize: none; outline: none;
   min-height: 60px; max-height: 160px;
-  transition: border-color var(--transition);
-  line-height: 1.5;
+  transition: border-color var(--transition); line-height: 1.5;
 }
 .notes-input:focus { border-color: var(--text-secondary); }
 .notes-input::placeholder { color: var(--text-muted); }
-
-/* checklist */
 .checklist { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
-
-.checklist-item {
-  display: flex; align-items: center; gap: 7px;
-  padding: 3px 0;
-}
-.checklist-item input[type="checkbox"] {
-  width: 13px; height: 13px; cursor: pointer;
-  accent-color: var(--accent-done); flex-shrink: 0;
-}
-.checklist-item-text {
-  font-size: 12px; flex: 1; color: var(--text-primary);
-  background: none; border: none; outline: none;
-  font-family: var(--font-mono); padding: 0;
-}
+.checklist-item { display: flex; align-items: center; gap: 7px; padding: 3px 0; }
+.checklist-item input[type="checkbox"] { width: 13px; height: 13px; cursor: pointer; accent-color: var(--accent-done); flex-shrink: 0; }
+.checklist-item-text { font-size: 12px; flex: 1; color: var(--text-primary); background: none; border: none; outline: none; font-family: var(--font-mono); padding: 0; }
 .checklist-item-text:focus { border-bottom: 1px solid var(--col-border); }
 .checklist-item.checked .checklist-item-text { text-decoration: line-through; color: var(--text-muted); }
-.checklist-item-del {
-  background: none; border: none; cursor: pointer;
-  color: var(--text-muted); font-size: 11px; padding: 0;
-  opacity: 0; transition: opacity var(--transition), color var(--transition);
-}
+.checklist-item-del { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 11px; padding: 0; opacity: 0; transition: opacity var(--transition), color var(--transition); }
 .checklist-item:hover .checklist-item-del { opacity: 1; }
 .checklist-item-del:hover { color: var(--delete-color); }
-
-.checklist-progress {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
-}
-.checklist-bar-track {
-  flex: 1; height: 4px; background: var(--col-border);
-  border-radius: 2px; overflow: hidden;
-}
-.checklist-bar-fill {
-  height: 100%; background: var(--accent-done);
-  border-radius: 2px; transition: width 0.2s ease;
-}
-.checklist-progress-pct {
-  font-size: 10px; color: var(--text-secondary);
-  font-weight: 500; min-width: 30px; text-align: right;
-}
-
-.add-checklist-item {
-  display: flex; gap: 5px; align-items: center;
-}
+.checklist-progress { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.checklist-bar-track { flex: 1; height: 4px; background: var(--col-border); border-radius: 2px; overflow: hidden; }
+.checklist-bar-fill { height: 100%; border-radius: 2px; transition: width 0.2s ease; }
+.checklist-progress-pct { font-size: 10px; color: var(--text-secondary); font-weight: 500; min-width: 30px; text-align: right; }
+.add-checklist-item { display: flex; gap: 5px; align-items: center; }
 .checklist-new-input {
   flex: 1; font-family: var(--font-mono); font-size: 12px;
   background: var(--col-bg); border: 1px solid var(--col-border);
   border-radius: 4px; padding: 4px 8px;
-  color: var(--text-primary); outline: none;
-  transition: border-color var(--transition);
+  color: var(--text-primary); outline: none; transition: border-color var(--transition);
 }
 .checklist-new-input:focus { border-color: var(--text-secondary); }
 .checklist-new-input::placeholder { color: var(--text-muted); }
@@ -432,7 +411,6 @@ body {
   min-height: 34px; max-height: 96px; overflow-y: auto;
 }
 .add-input::placeholder { color: var(--text-muted); }
-.add-input:focus { box-shadow: 0 0 0 2px rgba(0,0,0,0.05); }
 .add-btn {
   font-family: var(--font-mono); font-size: 18px; line-height: 1;
   background: var(--text-primary); color: var(--bg);
@@ -455,42 +433,26 @@ body {
 
 /* ── ARCHIVE DRAWER ── */
 .archive-drawer {
-  display: none;
-  position: fixed; top: 52px; right: 0; bottom: 0;
-  width: 280px;
-  background: var(--surface);
-  border-left: 1px solid var(--col-border);
-  z-index: 50;
-  flex-direction: column;
-  box-shadow: -4px 0 16px rgba(0,0,0,0.08);
+  display: none; position: fixed; top: 52px; right: 0; bottom: 0;
+  width: 280px; background: var(--surface);
+  border-left: 1px solid var(--col-border); z-index: 50;
+  flex-direction: column; box-shadow: -4px 0 16px rgba(0,0,0,0.08);
 }
 .archive-drawer.open { display: flex; }
-
 .archive-header {
-  padding: 1rem 1.25rem 0.875rem;
-  border-bottom: 1px solid var(--col-border);
+  padding: 1rem 1.25rem 0.875rem; border-bottom: 1px solid var(--col-border);
   display: flex; align-items: center; justify-content: space-between;
 }
-.archive-title {
-  font-family: var(--font-display); font-size: 1rem;
-  font-weight: 300; font-style: italic;
-}
-.archive-close {
-  background: none; border: none; cursor: pointer;
-  color: var(--text-muted); font-size: 16px;
-  transition: color var(--transition);
-}
+.archive-title { font-family: var(--font-display); font-size: 1rem; font-weight: 300; font-style: italic; }
+.archive-close { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 16px; transition: color var(--transition); }
 .archive-close:hover { color: var(--text-primary); }
-
 .archive-list { flex: 1; overflow-y: auto; padding: 0.75rem; display: flex; flex-direction: column; gap: 6px; }
-
 .archive-item {
   background: var(--col-bg); border: 1px solid var(--col-border);
   border-radius: var(--radius-sm); padding: 10px 12px;
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
-.archive-item-name { font-size: 12px; flex: 1; }
-.archive-item-actions { display: flex; gap: 4px; }
+.archive-item-actions { display: flex; gap: 4px; flex-shrink: 0; }
 .archive-action-btn {
   background: none; border: 1px solid var(--col-border);
   border-radius: 4px; padding: 3px 8px;
@@ -500,12 +462,7 @@ body {
 }
 .archive-action-btn:hover { background: var(--card-border); color: var(--text-primary); }
 .archive-action-btn.danger:hover { color: var(--delete-color); border-color: var(--delete-color); }
-
-.archive-empty {
-  text-align: center; padding: 2rem 1rem;
-  color: var(--text-muted); font-size: 11px;
-  letter-spacing: 0.06em; text-transform: uppercase;
-}
+.archive-empty { text-align: center; padding: 2rem 1rem; color: var(--text-muted); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
 
 /* ── MODAL ── */
 .modal-overlay {
@@ -516,14 +473,10 @@ body {
 .modal-overlay.open { display: flex; }
 .modal {
   background: var(--surface); border: 1px solid var(--col-border);
-  border-radius: var(--radius); padding: 1.5rem;
-  width: 340px; max-width: 90vw;
+  border-radius: var(--radius); padding: 1.5rem; width: 340px; max-width: 90vw;
   box-shadow: 0 8px 32px rgba(0,0,0,0.15);
 }
-.modal h2 {
-  font-family: var(--font-display); font-size: 1.1rem;
-  font-weight: 300; font-style: italic; margin-bottom: 0.75rem;
-}
+.modal h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 300; font-style: italic; margin-bottom: 0.75rem; }
 .modal p { font-size: 12px; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5; }
 .modal input[type="text"] {
   width: 100%; font-family: var(--font-mono); font-size: 13px;
@@ -534,9 +487,8 @@ body {
 .modal input[type="text"]:focus { border-color: var(--text-secondary); }
 .modal-btns { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
 .modal-btn {
-  font-family: var(--font-mono); font-size: 12px;
-  padding: 6px 14px; border-radius: var(--radius-sm);
-  border: 1px solid var(--col-border);
+  font-family: var(--font-mono); font-size: 12px; padding: 6px 14px;
+  border-radius: var(--radius-sm); border: 1px solid var(--col-border);
   cursor: pointer; background: var(--col-bg); color: var(--text-primary);
   transition: background var(--transition), opacity var(--transition);
 }
@@ -560,13 +512,29 @@ body {
 </head>
 <body>
 
-<!-- TOP NAV -->
-<nav class="top-nav">
-  <span class="brand">Gary's Tracker</span>
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <div class="login-brand">Gary's Board</div>
+    <div class="login-sub">Sign in to continue</div>
+    <label class="login-label">Email address</label>
+    <input class="login-input" type="email" id="login-email" placeholder="you@email.com" autocomplete="email" />
+    <button class="login-btn" id="login-btn">Send magic link</button>
+    <div class="login-msg" id="login-msg"></div>
+  </div>
+</div>
+
+<!-- TOP NAV (hidden until logged in) -->
+<nav class="top-nav" id="top-nav">
+  <span class="brand">
+    <span class="sync-dot" id="sync-dot" title="Sync status"></span>
+    Gary's Board
+  </span>
   <div class="board-tabs" id="board-tabs"></div>
   <div class="nav-actions">
-    <button class="nav-btn" id="archive-toggle-btn" title="Archived boards">&#9632; Archive</button>
-    <button class="nav-btn" id="new-board-btn" title="New board">+ New board</button>
+    <button class="nav-btn" id="archive-toggle-btn">&#9632; Archive</button>
+    <button class="nav-btn" id="new-board-btn">+ New board</button>
+    <button class="nav-btn signout" id="signout-btn">Sign out</button>
   </div>
 </nav>
 
@@ -587,7 +555,7 @@ body {
   <div class="modal">
     <h2>New board</h2>
     <input type="text" id="new-board-name" placeholder="Board name..." maxlength="40" />
-    <p id="carryover-question">Copy all cards from <strong id="current-board-name-label"></strong> into this board?</p>
+    <p>Copy all cards from <strong id="current-board-name-label"></strong> into this board?</p>
     <div class="modal-btns">
       <button class="modal-btn" id="modal-cancel">Cancel</button>
       <button class="modal-btn" id="modal-blank">Start blank</button>
@@ -597,38 +565,155 @@ body {
 </div>
 
 <script>
+// ── CONFIG ────────────────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://dmmqjthrnkkicdjlpnqz.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_9T9qG3WKrElcUUuJsXF3mA_buQiEp5I';
+
+// ── CONSTANTS ─────────────────────────────────────────────────────────────
 const COLS       = ['todo','doing','done'];
 const COL_LABELS = { todo:'To Do', doing:'Doing', done:'Done' };
 const COL_EMPTY  = { todo:'Nothing here yet', doing:'Nothing in progress', done:'Completions appear here' };
-const STORE_KEY  = 'garyboard_v2';
 
-let appState = { activeBoardId: null, boards: [], archived: [] };
-let draggedCard = null, placeholder = null;
+// ── STATE ─────────────────────────────────────────────────────────────────
+let currentUser  = null;
+let appState     = { activeBoardId: null, boards: [], archived: [] };
+let draggedCard  = null, placeholder = null;
+let saveTimer    = null;
 
-function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+// ── UTILS ─────────────────────────────────────────────────────────────────
+function genId()    { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function todayStr() { return new Date().toISOString().slice(0,10); }
-function fmtDate(s) {
-  if (!s) return '';
-  const [y,m,d] = s.split('-');
-  return `${m}/${d}/${y.slice(2)}`;
-}
+function fmtDate(s) { if (!s) return ''; const [y,m,d] = s.split('-'); return `${m}/${d}/${y.slice(2)}`; }
 function deepClone(o) { return JSON.parse(JSON.stringify(o)); }
 
-/* ── PERSISTENCE ── */
-function loadApp() {
-  try { const r = localStorage.getItem(STORE_KEY); if (r) appState = JSON.parse(r); } catch(e) {}
-  if (!appState.boards) appState.boards = [];
-  if (!appState.archived) appState.archived = [];
-  if (!appState.boards.length) {
-    const id = genId();
-    appState.boards = [{ id, name:'My First Board', cards:{ todo:[], doing:[], done:[] } }];
-    appState.activeBoardId = id;
+// ── SUPABASE FETCH HELPER ─────────────────────────────────────────────────
+async function sb(path, method='GET', body=null, token=null) {
+  const headers = {
+    'apikey': SUPABASE_KEY,
+    'Content-Type': 'application/json',
+    'Prefer': 'return=representation'
+  };
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  else headers['Authorization'] = 'Bearer ' + SUPABASE_KEY;
+
+  const opts = { method, headers };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(SUPABASE_URL + path, opts);
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(err);
   }
-  if (!appState.activeBoardId || !appState.boards.find(b => b.id === appState.activeBoardId)) {
-    appState.activeBoardId = appState.boards[0].id;
-  }
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
 }
 
+// ── AUTH ──────────────────────────────────────────────────────────────────
+async function sendMagicLink(email) {
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/otp`, {
+    method: 'POST',
+    headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, create_user: true })
+  });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+async function getSession() {
+  // Check URL for token from magic link
+  const hash = window.location.hash;
+  if (hash.includes('access_token')) {
+    const params = new URLSearchParams(hash.slice(1));
+    const token = params.get('access_token');
+    if (token) {
+      // Get user from token
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token }
+      });
+      if (res.ok) {
+        const user = await res.json();
+        const session = { access_token: token, user };
+        localStorage.setItem('gb_session', JSON.stringify(session));
+        window.history.replaceState({}, '', window.location.pathname);
+        return session;
+      }
+    }
+  }
+  // Check localStorage
+  const stored = localStorage.getItem('gb_session');
+  if (stored) {
+    try {
+      const session = JSON.parse(stored);
+      // Verify token is still valid
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + session.access_token }
+      });
+      if (res.ok) return session;
+      localStorage.removeItem('gb_session');
+    } catch(e) {}
+  }
+  return null;
+}
+
+function signOut() {
+  localStorage.removeItem('gb_session');
+  currentUser = null;
+  document.getElementById('top-nav').classList.remove('visible');
+  document.getElementById('board').classList.remove('visible');
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-msg').textContent = '';
+}
+
+// ── SYNC STATUS ───────────────────────────────────────────────────────────
+function setSyncStatus(status) {
+  const dot = document.getElementById('sync-dot');
+  dot.className = 'sync-dot ' + status;
+}
+
+// ── SUPABASE DB ───────────────────────────────────────────────────────────
+async function loadBoardsFromDB(token, userId) {
+  const data = await sb(`/rest/v1/boards?user_id=eq.${userId}&order=created_at.asc`, 'GET', null, token);
+  return data || [];
+}
+
+async function upsertBoard(token, board, userId) {
+  const lastDone = boardLastDoneDate(board);
+  await sb('/rest/v1/boards', 'POST', {
+    id: board.id,
+    user_id: userId,
+    name: board.name,
+    cards: board.cards,
+    archived: false,
+    last_done_date: lastDone
+  }, token);
+}
+
+async function upsertBoardArchived(token, board, userId) {
+  const lastDone = boardLastDoneDate(board);
+  await sb('/rest/v1/boards', 'POST', {
+    id: board.id,
+    user_id: userId,
+    name: board.name,
+    cards: board.cards,
+    archived: true,
+    last_done_date: lastDone
+  }, token);
+}
+
+async function updateBoardInDB(token, board, userId, archived=false) {
+  const lastDone = boardLastDoneDate(board);
+  await sb(`/rest/v1/boards?id=eq.${board.id}`, 'PATCH', {
+    name: board.name,
+    cards: board.cards,
+    archived,
+    last_done_date: lastDone,
+    updated_at: new Date().toISOString()
+  }, token);
+}
+
+async function deleteBoardFromDB(token, boardId) {
+  await sb(`/rest/v1/boards?id=eq.${boardId}`, 'DELETE', null, token);
+}
+
+// ── PERSISTENCE ───────────────────────────────────────────────────────────
 function snapshotActive() {
   const board = activeBoard();
   if (!board) return;
@@ -654,15 +739,103 @@ function cardToData(el) {
   };
 }
 
+// Debounced save — waits 800ms after last change before syncing to DB
 function save() {
   snapshotActive();
-  localStorage.setItem(STORE_KEY, JSON.stringify(appState));
   updateCounts();
+  clearTimeout(saveTimer);
+  setSyncStatus('syncing');
+  saveTimer = setTimeout(async () => {
+    try {
+      const session = JSON.parse(localStorage.getItem('gb_session') || '{}');
+      const token = session.access_token;
+      const userId = session.user?.id;
+      if (!token || !userId) return;
+      const board = activeBoard();
+      if (board) await updateBoardInDB(token, board, userId, false);
+      setSyncStatus('synced');
+      setTimeout(() => setSyncStatus(''), 2000);
+    } catch(e) {
+      setSyncStatus('error');
+      console.error('Sync error:', e);
+    }
+  }, 800);
 }
 
 function activeBoard() { return appState.boards.find(b => b.id === appState.activeBoardId); }
 
-/* ── TABS ── */
+// ── BOOTSTRAP ─────────────────────────────────────────────────────────────
+async function bootstrap() {
+  const session = await getSession();
+  if (!session) return; // stay on login screen
+
+  currentUser = session.user;
+  showApp();
+
+  try {
+    const rows = await loadBoardsFromDB(session.access_token, currentUser.id);
+    appState.boards   = rows.filter(r => !r.archived).map(r => ({ id: r.id, name: r.name, cards: r.cards || { todo:[], doing:[], done:[] } }));
+    appState.archived = rows.filter(r => r.archived).map(r => ({ id: r.id, name: r.name, cards: r.cards || { todo:[], doing:[], done:[] } }));
+
+    // Sort archived by last_done_date desc
+    appState.archived.sort((a, b) => {
+      const da = boardLastDoneDate(a), db = boardLastDoneDate(b);
+      if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
+      return db.localeCompare(da);
+    });
+
+    if (!appState.boards.length) {
+      // First time user — create default board
+      const id = genId();
+      const board = { id, name: 'My First Board', cards: { todo:[], doing:[], done:[] } };
+      appState.boards = [board];
+      await upsertBoard(session.access_token, board, currentUser.id);
+    }
+
+    appState.activeBoardId = appState.boards[0].id;
+    renderTabs();
+    renderBoard();
+  } catch(e) {
+    console.error('Load error:', e);
+    setSyncStatus('error');
+  }
+}
+
+function showApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('top-nav').classList.add('visible');
+  document.getElementById('board').classList.add('visible');
+}
+
+// ── LOGIN UI ──────────────────────────────────────────────────────────────
+document.getElementById('login-btn').addEventListener('click', async () => {
+  const email = document.getElementById('login-email').value.trim();
+  const msg = document.getElementById('login-msg');
+  const btn = document.getElementById('login-btn');
+  if (!email) { msg.textContent = 'Enter your email address.'; msg.className = 'login-msg error'; return; }
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  msg.textContent = '';
+  try {
+    await sendMagicLink(email);
+    msg.textContent = 'Check your email for a magic link.';
+    msg.className = 'login-msg success';
+    btn.textContent = 'Sent!';
+  } catch(e) {
+    msg.textContent = 'Something went wrong. Try again.';
+    msg.className = 'login-msg error';
+    btn.disabled = false;
+    btn.textContent = 'Send magic link';
+  }
+});
+
+document.getElementById('login-email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('login-btn').click();
+});
+
+document.getElementById('signout-btn').addEventListener('click', signOut);
+
+// ── TABS ──────────────────────────────────────────────────────────────────
 function renderTabs() {
   const el = document.getElementById('board-tabs');
   el.innerHTML = '';
@@ -670,7 +843,7 @@ function renderTabs() {
     const isActive = board.id === appState.activeBoardId;
     const tab = document.createElement('button');
     tab.className = 'board-tab' + (isActive ? ' active' : '');
-    tab.title = 'Click to switch, double-click name to rename';
+    tab.dataset.boardId = board.id;
 
     const nameSpan = document.createElement('span');
     nameSpan.className = 'tab-name';
@@ -682,20 +855,18 @@ function renderTabs() {
     renameInput.value = board.name;
     renameInput.maxLength = 40;
 
-    // Double-click on name to rename (only active tab)
     nameSpan.addEventListener('dblclick', e => {
       if (!isActive) return;
       e.stopPropagation();
       tab.classList.add('renaming');
-      renameInput.focus();
-      renameInput.select();
+      renameInput.focus(); renameInput.select();
     });
-    renameInput.addEventListener('blur', () => {
+    renameInput.addEventListener('blur', async () => {
       board.name = renameInput.value.trim() || board.name;
       tab.classList.remove('renaming');
       nameSpan.textContent = board.name;
-      save();
       renderTabs();
+      await syncBoard(board, false);
     });
     renameInput.addEventListener('keydown', e => {
       if (e.key === 'Enter') renameInput.blur();
@@ -704,69 +875,74 @@ function renderTabs() {
     });
     renameInput.addEventListener('click', e => e.stopPropagation());
 
-    // Rename pencil button — always visible on hover for all tabs
     const renameBtn = document.createElement('button');
     renameBtn.className = 'tab-rename-btn';
-    renameBtn.innerHTML = '&#9998;'; // pencil
+    renameBtn.innerHTML = '&#9998;';
     renameBtn.title = 'Rename board';
     renameBtn.addEventListener('click', e => {
       e.stopPropagation();
-      // Switch to this board first if not active
       if (appState.activeBoardId !== board.id) {
-        save();
+        snapshotActive();
         appState.activeBoardId = board.id;
-        renderTabs();
-        renderBoard();
-        // After re-render, trigger rename on new tab
+        renderTabs(); renderBoard();
         setTimeout(() => {
-          const newTab = document.querySelector(`.board-tab[data-board-id="${board.id}"]`);
-          if (newTab) newTab.querySelector('.tab-rename-btn').click();
+          const t = document.querySelector(`.board-tab[data-board-id="${board.id}"]`);
+          if (t) t.querySelector('.tab-rename-btn').click();
         }, 50);
         return;
       }
       tab.classList.add('renaming');
-      renameInput.focus();
-      renameInput.select();
+      renameInput.focus(); renameInput.select();
     });
 
     const delBtn = document.createElement('button');
     delBtn.className = 'tab-del';
     delBtn.innerHTML = '&#x2715;';
     delBtn.title = 'Archive this board';
-    delBtn.addEventListener('click', e => {
+    delBtn.addEventListener('click', async e => {
       e.stopPropagation();
-      if (appState.boards.length === 1) { alert('Archive all boards? Create a new one first.'); return; }
+      if (appState.boards.length === 1) { alert('Create a new board before archiving this one.'); return; }
       snapshotActive();
-      appState.archived.unshift(deepClone(board));
+      const archived = deepClone(board);
       appState.boards = appState.boards.filter(b => b.id !== board.id);
       if (appState.activeBoardId === board.id) appState.activeBoardId = appState.boards[0].id;
-      save();
-      renderTabs();
-      renderBoard();
-      renderArchive();
+      appState.archived.unshift(archived);
+      // Re-sort archived
+      appState.archived.sort((a, b) => {
+        const da = boardLastDoneDate(a), db = boardLastDoneDate(b);
+        if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
+        return db.localeCompare(da);
+      });
+      renderTabs(); renderBoard(); renderArchive();
+      await syncBoard(archived, true);
     });
 
-    tab.dataset.boardId = board.id;
-    tab.appendChild(nameSpan);
-    tab.appendChild(renameInput);
-    tab.appendChild(renameBtn);
-    tab.appendChild(delBtn);
+    tab.appendChild(nameSpan); tab.appendChild(renameInput);
+    tab.appendChild(renameBtn); tab.appendChild(delBtn);
 
-    // Entire tab switches board on click (FIX #1)
-    tab.addEventListener('click', e => {
+    tab.addEventListener('click', () => {
       if (tab.classList.contains('renaming')) return;
       if (appState.activeBoardId === board.id) return;
-      save();
+      snapshotActive();
       appState.activeBoardId = board.id;
-      renderTabs();
-      renderBoard();
+      renderTabs(); renderBoard();
     });
 
     el.appendChild(tab);
   });
 }
 
-/* ── BOARD ── */
+async function syncBoard(board, archived) {
+  try {
+    setSyncStatus('syncing');
+    const session = JSON.parse(localStorage.getItem('gb_session') || '{}');
+    await updateBoardInDB(session.access_token, board, session.user?.id, archived);
+    setSyncStatus('synced');
+    setTimeout(() => setSyncStatus(''), 2000);
+  } catch(e) { setSyncStatus('error'); console.error(e); }
+}
+
+// ── BOARD ─────────────────────────────────────────────────────────────────
 function renderBoard() {
   const boardEl = document.getElementById('board');
   boardEl.innerHTML = '';
@@ -798,7 +974,6 @@ function renderBoard() {
     const container = column.querySelector('#col-' + col);
     setupDrop(container);
     setupAddBtn(col);
-
     (board.cards[col] || []).forEach(c => {
       const card = makeCard(c);
       card.classList.remove('card-enter');
@@ -809,7 +984,7 @@ function renderBoard() {
   updateCounts();
 }
 
-/* ── CARD ── */
+// ── CARD ──────────────────────────────────────────────────────────────────
 function pillClass(dueDate, col) {
   if (!dueDate || col === 'done') return '';
   const due = new Date(dueDate + 'T00:00:00');
@@ -830,18 +1005,15 @@ function makeCard(data) {
   card.dataset.completedDate = completedDate;
   card.draggable = true;
 
-  /* top row */
   const top = document.createElement('div');
   top.className = 'card-top';
 
   const textEl = document.createElement('div');
   textEl.className = 'card-text';
   textEl.textContent = text;
-  textEl.title = 'Double-click to edit title';
+  textEl.title = 'Double-click to edit';
   textEl.addEventListener('dblclick', () => {
-    textEl.contentEditable = 'true';
-    card.draggable = false;
-    textEl.focus();
+    textEl.contentEditable = 'true'; card.draggable = false; textEl.focus();
     const r = document.createRange(); r.selectNodeContents(textEl);
     window.getSelection().removeAllRanges(); window.getSelection().addRange(r);
   });
@@ -855,22 +1027,18 @@ function makeCard(data) {
     if (e.key === 'Escape') textEl.blur();
   });
 
-  /* action buttons */
   const actions = document.createElement('div');
   actions.className = 'card-actions';
 
-  // Expand toggle (notes/checklist) — FIX #2
   const expandBtn = document.createElement('button');
   expandBtn.className = 'card-icon-btn expand-btn';
   expandBtn.title = 'Notes & checklist';
-  expandBtn.innerHTML = '&#9776;'; // hamburger
+  expandBtn.innerHTML = '&#9776;';
   expandBtn.addEventListener('click', e => {
     e.stopPropagation();
     expandSection.classList.toggle('open');
     expandBtn.style.opacity = expandSection.classList.contains('open') ? '1' : '';
-    if (expandSection.classList.contains('open')) {
-      notesInput.focus();
-    }
+    if (expandSection.classList.contains('open')) notesInput.focus();
   });
 
   const delBtn = document.createElement('button');
@@ -883,20 +1051,17 @@ function makeCard(data) {
     setTimeout(() => { card.remove(); save(); }, 150);
   });
 
-  actions.appendChild(expandBtn);
-  actions.appendChild(delBtn);
-  top.appendChild(textEl);
-  top.appendChild(actions);
+  actions.appendChild(expandBtn); actions.appendChild(delBtn);
+  top.appendChild(textEl); top.appendChild(actions);
   card.appendChild(top);
 
-  /* meta row (dates) */
+  // Meta row
   const meta = document.createElement('div');
   meta.className = 'card-meta';
 
   const duePill = document.createElement('span');
   duePill.className = 'date-pill';
 
-  // Done date: pill display + editable input side by side
   const doneWrap = document.createElement('div');
   doneWrap.className = 'due-input-wrap done-date-wrap';
   doneWrap.style.display = 'none';
@@ -904,22 +1069,18 @@ function makeCard(data) {
   doneLabel.className = 'due-label';
   doneLabel.textContent = 'done';
   const doneInput = document.createElement('input');
-  doneInput.type = 'date';
-  doneInput.className = 'due-input done-date-input';
-  doneInput.value = completedDate;
-  doneInput.title = 'Edit completion date';
+  doneInput.type = 'date'; doneInput.className = 'due-input done-date-input';
+  doneInput.value = completedDate; doneInput.title = 'Edit completion date';
   doneInput.addEventListener('change', () => {
     card.dataset.completedDate = doneInput.value;
     refreshMeta(card, duePill, doneWrap, doneInput); save();
   });
-  doneWrap.appendChild(doneLabel);
-  doneWrap.appendChild(doneInput);
+  doneWrap.appendChild(doneLabel); doneWrap.appendChild(doneInput);
 
   const dueWrap = document.createElement('div');
   dueWrap.className = 'due-input-wrap';
   const dueLabel = document.createElement('span');
-  dueLabel.className = 'due-label';
-  dueLabel.textContent = 'due';
+  dueLabel.className = 'due-label'; dueLabel.textContent = 'due';
   const dueInput = document.createElement('input');
   dueInput.type = 'date'; dueInput.className = 'due-input';
   dueInput.value = dueDate; dueInput.title = 'Set due date';
@@ -931,22 +1092,17 @@ function makeCard(data) {
   meta.appendChild(duePill); meta.appendChild(doneWrap); meta.appendChild(dueWrap);
   card.appendChild(meta);
 
-  /* ── EXPAND SECTION: notes + checklist ── */
+  // Expand section
   const expandSection = document.createElement('div');
   expandSection.className = 'card-expand';
-  // auto-open if has content
   if (notes || checklist.length) expandSection.classList.add('open');
 
-  // Notes
   const notesSection = document.createElement('div');
   notesSection.className = 'expand-section';
   const notesLabel = document.createElement('span');
-  notesLabel.className = 'expand-label';
-  notesLabel.textContent = 'Notes';
+  notesLabel.className = 'expand-label'; notesLabel.textContent = 'Notes';
   const notesInput = document.createElement('textarea');
-  notesInput.className = 'notes-input';
-  notesInput.placeholder = 'Add notes...';
-  notesInput.value = notes;
+  notesInput.className = 'notes-input'; notesInput.placeholder = 'Add notes...'; notesInput.value = notes;
   notesInput.addEventListener('mousedown', e => e.stopPropagation());
   notesInput.addEventListener('input', () => {
     notesInput.style.height = 'auto';
@@ -954,8 +1110,7 @@ function makeCard(data) {
     save();
   });
   notesInput.addEventListener('change', save);
-  notesSection.appendChild(notesLabel);
-  notesSection.appendChild(notesInput);
+  notesSection.appendChild(notesLabel); notesSection.appendChild(notesInput);
   expandSection.appendChild(notesSection);
 
   // Checklist
@@ -963,40 +1118,27 @@ function makeCard(data) {
   checkSection.className = 'expand-section';
   const checkLabel = document.createElement('span');
   checkLabel.className = 'expand-label';
-  checkLabel.id = 'cl-label-' + id;
-
   const checklistEl = document.createElement('div');
   checklistEl.className = 'checklist';
 
-  // Progress bar elements — built once, referenced in update
   const progressRow = document.createElement('div');
   progressRow.className = 'checklist-progress';
-  const barTrack = document.createElement('div');
-  barTrack.className = 'checklist-bar-track';
-  const barFill = document.createElement('div');
-  barFill.className = 'checklist-bar-fill';
-  barFill.style.width = '0%';
-  const pctLabel = document.createElement('span');
-  pctLabel.className = 'checklist-progress-pct';
-  pctLabel.textContent = '0%';
-  barTrack.appendChild(barFill);
-  progressRow.appendChild(barTrack);
-  progressRow.appendChild(pctLabel);
+  const barTrack = document.createElement('div'); barTrack.className = 'checklist-bar-track';
+  const barFill = document.createElement('div'); barFill.className = 'checklist-bar-fill'; barFill.style.width = '0%';
+  const pctLabel = document.createElement('span'); pctLabel.className = 'checklist-progress-pct'; pctLabel.textContent = '0%';
+  barTrack.appendChild(barFill); progressRow.appendChild(barTrack); progressRow.appendChild(pctLabel);
 
   function updateChecklistLabel() {
     const items = checklistEl.querySelectorAll('.checklist-item');
     const doneCount = checklistEl.querySelectorAll('.checklist-item.checked').length;
     const total = items.length;
-    if (total === 0) {
-      checkLabel.textContent = 'Checklist';
-      progressRow.style.display = 'none';
-    } else {
+    if (total === 0) { checkLabel.textContent = 'Checklist'; progressRow.style.display = 'none'; }
+    else {
       const pct = Math.round((doneCount / total) * 100);
       checkLabel.textContent = `Checklist (${doneCount}/${total})`;
       barFill.style.width = pct + '%';
-      pctLabel.textContent = pct + '%';
-      // Turn bar green when 100%
       barFill.style.background = pct === 100 ? 'var(--accent-done)' : 'var(--accent-doing)';
+      pctLabel.textContent = pct + '%';
       progressRow.style.display = '';
     }
   }
@@ -1004,33 +1146,18 @@ function makeCard(data) {
   function makeCheckItem(itemText='', checked=false) {
     const row = document.createElement('div');
     row.className = 'checklist-item' + (checked ? ' checked' : '');
-
-    const cb = document.createElement('input');
-    cb.type = 'checkbox'; cb.checked = checked;
-    cb.addEventListener('change', () => {
-      row.classList.toggle('checked', cb.checked);
-      updateChecklistLabel(); save();
-    });
-
-    const textInput = document.createElement('input');
-    textInput.type = 'text';
-    textInput.className = 'checklist-item-text';
-    textInput.value = itemText;
-    textInput.placeholder = 'Item...';
+    const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = checked;
+    cb.addEventListener('change', () => { row.classList.toggle('checked', cb.checked); updateChecklistLabel(); save(); });
+    const textInput = document.createElement('input'); textInput.type = 'text';
+    textInput.className = 'checklist-item-text'; textInput.value = itemText; textInput.placeholder = 'Item...';
     textInput.addEventListener('mousedown', e => e.stopPropagation());
     textInput.addEventListener('change', save);
     textInput.addEventListener('keydown', e => {
       if (e.key === 'Enter') { e.preventDefault(); newItemInput.focus(); }
-      if (e.key === 'Backspace' && !textInput.value) {
-        row.remove(); updateChecklistLabel(); save();
-      }
+      if (e.key === 'Backspace' && !textInput.value) { row.remove(); updateChecklistLabel(); save(); }
     });
-
-    const delItem = document.createElement('button');
-    delItem.className = 'checklist-item-del';
-    delItem.innerHTML = '&#x2715;';
+    const delItem = document.createElement('button'); delItem.className = 'checklist-item-del'; delItem.innerHTML = '&#x2715;';
     delItem.addEventListener('click', () => { row.remove(); updateChecklistLabel(); save(); });
-
     row.appendChild(cb); row.appendChild(textInput); row.appendChild(delItem);
     return row;
   }
@@ -1038,45 +1165,29 @@ function makeCard(data) {
   checklist.forEach(item => checklistEl.appendChild(makeCheckItem(item.text, item.checked)));
   updateChecklistLabel();
 
-  const addCheckWrap = document.createElement('div');
-  addCheckWrap.className = 'add-checklist-item';
-  const newItemInput = document.createElement('input');
-  newItemInput.type = 'text';
-  newItemInput.className = 'checklist-new-input';
-  newItemInput.placeholder = 'Add item...';
+  const addCheckWrap = document.createElement('div'); addCheckWrap.className = 'add-checklist-item';
+  const newItemInput = document.createElement('input'); newItemInput.type = 'text';
+  newItemInput.className = 'checklist-new-input'; newItemInput.placeholder = 'Add item...';
   newItemInput.addEventListener('mousedown', e => e.stopPropagation());
   newItemInput.addEventListener('keydown', e => {
     if (e.key === 'Enter' && newItemInput.value.trim()) {
       checklistEl.appendChild(makeCheckItem(newItemInput.value.trim()));
-      newItemInput.value = '';
-      updateChecklistLabel(); save();
+      newItemInput.value = ''; updateChecklistLabel(); save();
     }
   });
-  const addItemBtn = document.createElement('button');
-  addItemBtn.className = 'checklist-add-btn';
-  addItemBtn.textContent = '+';
+  const addItemBtn = document.createElement('button'); addItemBtn.className = 'checklist-add-btn'; addItemBtn.textContent = '+';
   addItemBtn.addEventListener('click', () => {
-    if (newItemInput.value.trim()) {
-      checklistEl.appendChild(makeCheckItem(newItemInput.value.trim()));
-      newItemInput.value = '';
-      updateChecklistLabel(); save();
-    } else { newItemInput.focus(); }
+    if (newItemInput.value.trim()) { checklistEl.appendChild(makeCheckItem(newItemInput.value.trim())); newItemInput.value = ''; updateChecklistLabel(); save(); }
+    else newItemInput.focus();
   });
-
-  addCheckWrap.appendChild(newItemInput);
-  addCheckWrap.appendChild(addItemBtn);
-  checkSection.appendChild(checkLabel);
-  checkSection.appendChild(progressRow);
-  checkSection.appendChild(checklistEl);
-  checkSection.appendChild(addCheckWrap);
+  addCheckWrap.appendChild(newItemInput); addCheckWrap.appendChild(addItemBtn);
+  checkSection.appendChild(checkLabel); checkSection.appendChild(progressRow);
+  checkSection.appendChild(checklistEl); checkSection.appendChild(addCheckWrap);
   expandSection.appendChild(checkSection);
-
   card.appendChild(expandSection);
 
-  // Show expand icon persistently if has content
   if (notes || checklist.length) expandBtn.style.opacity = '1';
 
-  /* drag */
   card.addEventListener('dragstart', e => {
     draggedCard = card; e.dataTransfer.effectAllowed = 'move';
     requestAnimationFrame(() => card.classList.add('dragging'));
@@ -1100,7 +1211,6 @@ function refreshMeta(card, duePill, doneWrap, doneInput) {
   const due = card.dataset.dueDate;
   const done = card.dataset.completedDate;
 
-  // Due date pill — hide in Done column
   if (due && col !== 'done') {
     const cls = pillClass(due, col);
     duePill.className = 'date-pill' + (cls ? ' ' + cls : '');
@@ -1108,21 +1218,16 @@ function refreshMeta(card, duePill, doneWrap, doneInput) {
     duePill.style.display = '';
   } else { duePill.style.display = 'none'; }
 
-  // Completion date row — only show in Done column
   if (col === 'done') {
     doneWrap.style.display = '';
-    doneInput.value = done || '';
-    if (!done) {
-      // auto-stamp today if not set
-      card.dataset.completedDate = todayStr();
-      doneInput.value = todayStr();
-    }
+    if (!done) { card.dataset.completedDate = todayStr(); doneInput.value = todayStr(); }
+    else doneInput.value = done;
   } else {
     doneWrap.style.display = 'none';
   }
 }
 
-/* ── DRAG & DROP ── */
+// ── DRAG & DROP ───────────────────────────────────────────────────────────
 function setupDrop(container) {
   container.addEventListener('dragover', e => {
     e.preventDefault();
@@ -1134,14 +1239,12 @@ function setupDrop(container) {
   container.addEventListener('dragenter', e => { e.preventDefault(); container.classList.add('drag-over'); });
   container.addEventListener('dragleave', e => { if (!container.contains(e.relatedTarget)) container.classList.remove('drag-over'); });
   container.addEventListener('drop', e => {
-    e.preventDefault();
-    container.classList.remove('drag-over');
+    e.preventDefault(); container.classList.remove('drag-over');
     if (!draggedCard || !placeholder) return;
     const targetCol = container.dataset.col;
     if (targetCol === 'done' && !draggedCard.dataset.completedDate) draggedCard.dataset.completedDate = todayStr();
     if (targetCol !== 'done') draggedCard.dataset.completedDate = '';
-    container.insertBefore(draggedCard, placeholder);
-    placeholder.remove();
+    container.insertBefore(draggedCard, placeholder); placeholder.remove();
     const dp = draggedCard.querySelector('.date-pill:not(.done-stamp)');
     const dw = draggedCard.querySelector('.done-date-wrap');
     const di = draggedCard.querySelector('.done-date-input');
@@ -1160,28 +1263,23 @@ function dragAfterEl(container, y) {
   }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
-/* ── ADD CARD ── */
+// ── ADD CARD ──────────────────────────────────────────────────────────────
 function setupAddBtn(col) {
   const btn   = document.querySelector(`.add-btn[data-col="${col}"]`);
   const input = document.querySelector(`.add-input[data-col="${col}"]`);
   const submit = () => {
-    const trimmed = input.value.trim();
-    if (!trimmed) return;
+    const trimmed = input.value.trim(); if (!trimmed) return;
     const completedDate = col === 'done' ? todayStr() : '';
     const card = makeCard({ id: genId(), text: trimmed, dueDate:'', completedDate, notes:'', checklist:[] });
     document.getElementById('col-' + col).appendChild(card);
-    input.value = ''; input.style.height = 'auto';
-    save();
+    input.value = ''; input.style.height = 'auto'; save();
   };
   btn.addEventListener('click', submit);
   input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); } });
-  input.addEventListener('input', () => {
-    input.style.height = 'auto';
-    input.style.height = Math.min(input.scrollHeight, 96) + 'px';
-  });
+  input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 96) + 'px'; });
 }
 
-/* ── COUNTS ── */
+// ── COUNTS ────────────────────────────────────────────────────────────────
 function updateCounts() {
   COLS.forEach(col => {
     const container = document.getElementById('col-' + col);
@@ -1193,19 +1291,13 @@ function updateCounts() {
   });
 }
 
-/* ── ARCHIVE HELPERS ── */
+// ── ARCHIVE ───────────────────────────────────────────────────────────────
 function boardLastDoneDate(board) {
-  // Returns the most recent completedDate string among all Done cards, or ''
   const doneCards = board.cards && board.cards.done ? board.cards.done : [];
-  const dates = doneCards
-    .map(c => c.completedDate || '')
-    .filter(Boolean)
-    .sort()
-    .reverse();
+  const dates = doneCards.map(c => c.completedDate || '').filter(Boolean).sort().reverse();
   return dates[0] || '';
 }
 
-/* ── ARCHIVE ── */
 function renderArchive() {
   const list = document.getElementById('archive-list');
   list.innerHTML = '';
@@ -1213,34 +1305,20 @@ function renderArchive() {
     list.innerHTML = '<div class="archive-empty">No archived boards</div>';
     return;
   }
-
-  // Sort newest last-done date first; boards with no done date go to bottom
-  const sorted = [...appState.archived].map((board, origIdx) => ({ board, origIdx, lastDone: boardLastDoneDate(board) }));
-  sorted.sort((a, b) => {
-    if (!a.lastDone && !b.lastDone) return 0;
-    if (!a.lastDone) return 1;
-    if (!b.lastDone) return -1;
-    return b.lastDone.localeCompare(a.lastDone); // newest first
-  });
-
-  sorted.forEach(({ board, origIdx }) => {
+  // Already sorted on load and on archive action
+  appState.archived.forEach((board, idx) => {
     const item = document.createElement('div');
     item.className = 'archive-item';
 
     const nameCol = document.createElement('div');
     nameCol.style.cssText = 'display:flex;flex-direction:column;gap:3px;flex:1;min-width:0;';
-
     const name = document.createElement('span');
-    name.className = 'archive-item-name';
-    name.textContent = board.name;
-
+    name.className = 'archive-item-name'; name.textContent = board.name;
     const lastDone = boardLastDoneDate(board);
     const dateLine = document.createElement('span');
     dateLine.style.cssText = 'font-size:10px;color:var(--text-muted);';
     dateLine.textContent = lastDone ? 'last done ' + fmtDate(lastDone) : 'no completed cards';
-
-    nameCol.appendChild(name);
-    nameCol.appendChild(dateLine);
+    nameCol.appendChild(name); nameCol.appendChild(dateLine);
 
     const acts = document.createElement('div');
     acts.className = 'archive-item-actions';
@@ -1248,31 +1326,29 @@ function renderArchive() {
     const restoreBtn = document.createElement('button');
     restoreBtn.className = 'archive-action-btn';
     restoreBtn.textContent = 'Restore';
-    restoreBtn.addEventListener('click', () => {
-      save();
+    restoreBtn.addEventListener('click', async () => {
       appState.boards.push(board);
-      appState.archived.splice(origIdx, 1);
+      appState.archived.splice(idx, 1);
       appState.activeBoardId = board.id;
-      save();
-      renderTabs();
-      renderBoard();
-      renderArchive();
+      renderTabs(); renderBoard(); renderArchive();
+      await syncBoard(board, false);
     });
 
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'archive-action-btn danger';
     deleteBtn.textContent = 'Delete';
-    deleteBtn.addEventListener('click', () => {
+    deleteBtn.addEventListener('click', async () => {
       if (!confirm(`Permanently delete "${board.name}"?`)) return;
-      appState.archived.splice(origIdx, 1);
-      save();
+      appState.archived.splice(idx, 1);
       renderArchive();
+      try {
+        const session = JSON.parse(localStorage.getItem('gb_session') || '{}');
+        await deleteBoardFromDB(session.access_token, board.id);
+      } catch(e) { console.error(e); }
     });
 
-    acts.appendChild(restoreBtn);
-    acts.appendChild(deleteBtn);
-    item.appendChild(nameCol);
-    item.appendChild(acts);
+    acts.appendChild(restoreBtn); acts.appendChild(deleteBtn);
+    item.appendChild(nameCol); item.appendChild(acts);
     list.appendChild(item);
   });
 }
@@ -1286,7 +1362,7 @@ document.getElementById('archive-close').addEventListener('click', () => {
   document.getElementById('archive-drawer').classList.remove('open');
 });
 
-/* ── NEW BOARD MODAL (FIX #4) ── */
+// ── NEW BOARD MODAL ───────────────────────────────────────────────────────
 const modalNew = document.getElementById('modal-new');
 const newBoardNameInput = document.getElementById('new-board-name');
 
@@ -1297,28 +1373,28 @@ document.getElementById('new-board-btn').addEventListener('click', () => {
   modalNew.classList.add('open');
   setTimeout(() => newBoardNameInput.focus(), 50);
 });
-
 document.getElementById('modal-cancel').addEventListener('click', () => modalNew.classList.remove('open'));
 modalNew.addEventListener('click', e => { if (e.target === modalNew) modalNew.classList.remove('open'); });
 
-function createBoard(copyCards) {
+async function createBoard(copyCards) {
   const name = newBoardNameInput.value.trim() || 'New Board';
-  save(); // snapshot current board first
+  snapshotActive();
   const cur = activeBoard();
   let cards = { todo:[], doing:[], done:[] };
   if (copyCards && cur) {
-    // deep clone cards but give new IDs
-    COLS.forEach(col => {
-      cards[col] = deepClone(cur.cards[col] || []).map(c => ({ ...c, id: genId() }));
-    });
+    COLS.forEach(col => { cards[col] = deepClone(cur.cards[col] || []).map(c => ({ ...c, id: genId() })); });
   }
   const id = genId();
-  appState.boards.push({ id, name, cards });
+  const board = { id, name, cards };
+  appState.boards.push(board);
   appState.activeBoardId = id;
   modalNew.classList.remove('open');
-  save();
-  renderTabs();
-  renderBoard();
+  renderTabs(); renderBoard();
+  try {
+    const session = JSON.parse(localStorage.getItem('gb_session') || '{}');
+    await upsertBoard(session.access_token, board, session.user?.id);
+    setSyncStatus('synced'); setTimeout(() => setSyncStatus(''), 2000);
+  } catch(e) { setSyncStatus('error'); console.error(e); }
 }
 
 document.getElementById('modal-blank').addEventListener('click', () => createBoard(false));
@@ -1328,11 +1404,8 @@ newBoardNameInput.addEventListener('keydown', e => {
   if (e.key === 'Escape') modalNew.classList.remove('open');
 });
 
-/* ── BOOT ── */
-loadApp();
-renderTabs();
-renderBoard();
-renderArchive();
+// ── BOOT ──────────────────────────────────────────────────────────────────
+bootstrap();
 </script>
 </body>
 </html>
