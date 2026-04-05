@@ -895,8 +895,25 @@ function makeCard(data) {
 
   const duePill = document.createElement('span');
   duePill.className = 'date-pill';
-  const donePill = document.createElement('span');
-  donePill.className = 'date-pill done-stamp';
+
+  // Done date: pill display + editable input side by side
+  const doneWrap = document.createElement('div');
+  doneWrap.className = 'due-input-wrap done-date-wrap';
+  doneWrap.style.display = 'none';
+  const doneLabel = document.createElement('span');
+  doneLabel.className = 'due-label';
+  doneLabel.textContent = 'done';
+  const doneInput = document.createElement('input');
+  doneInput.type = 'date';
+  doneInput.className = 'due-input done-date-input';
+  doneInput.value = completedDate;
+  doneInput.title = 'Edit completion date';
+  doneInput.addEventListener('change', () => {
+    card.dataset.completedDate = doneInput.value;
+    refreshMeta(card, duePill, doneWrap, doneInput); save();
+  });
+  doneWrap.appendChild(doneLabel);
+  doneWrap.appendChild(doneInput);
 
   const dueWrap = document.createElement('div');
   dueWrap.className = 'due-input-wrap';
@@ -908,10 +925,10 @@ function makeCard(data) {
   dueInput.value = dueDate; dueInput.title = 'Set due date';
   dueInput.addEventListener('change', () => {
     card.dataset.dueDate = dueInput.value;
-    refreshMeta(card, duePill, donePill); save();
+    refreshMeta(card, duePill, doneWrap, doneInput); save();
   });
   dueWrap.appendChild(dueLabel); dueWrap.appendChild(dueInput);
-  meta.appendChild(duePill); meta.appendChild(donePill); meta.appendChild(dueWrap);
+  meta.appendChild(duePill); meta.appendChild(doneWrap); meta.appendChild(dueWrap);
   card.appendChild(meta);
 
   /* ── EXPAND SECTION: notes + checklist ── */
@@ -1073,27 +1090,36 @@ function makeCard(data) {
     draggedCard = null; placeholder = null; save();
   });
 
-  refreshMeta(card, duePill, donePill);
+  refreshMeta(card, duePill, doneWrap, doneInput);
   return card;
 }
 
-function refreshMeta(card, duePill, donePill) {
+function refreshMeta(card, duePill, doneWrap, doneInput) {
   const container = card.closest('.cards-container');
   const col = container ? container.dataset.col : 'todo';
   const due = card.dataset.dueDate;
   const done = card.dataset.completedDate;
 
-  if (due) {
+  // Due date pill — hide in Done column
+  if (due && col !== 'done') {
     const cls = pillClass(due, col);
     duePill.className = 'date-pill' + (cls ? ' ' + cls : '');
     duePill.textContent = 'due ' + fmtDate(due);
     duePill.style.display = '';
   } else { duePill.style.display = 'none'; }
 
-  if (done) {
-    donePill.textContent = 'done ' + fmtDate(done);
-    donePill.style.display = '';
-  } else { donePill.style.display = 'none'; }
+  // Completion date row — only show in Done column
+  if (col === 'done') {
+    doneWrap.style.display = '';
+    doneInput.value = done || '';
+    if (!done) {
+      // auto-stamp today if not set
+      card.dataset.completedDate = todayStr();
+      doneInput.value = todayStr();
+    }
+  } else {
+    doneWrap.style.display = 'none';
+  }
 }
 
 /* ── DRAG & DROP ── */
@@ -1117,8 +1143,9 @@ function setupDrop(container) {
     container.insertBefore(draggedCard, placeholder);
     placeholder.remove();
     const dp = draggedCard.querySelector('.date-pill:not(.done-stamp)');
-    const donep = draggedCard.querySelector('.done-stamp');
-    if (dp && donep) refreshMeta(draggedCard, dp, donep);
+    const dw = draggedCard.querySelector('.done-date-wrap');
+    const di = draggedCard.querySelector('.done-date-input');
+    if (dp && dw && di) refreshMeta(draggedCard, dp, dw, di);
     save();
   });
 }
@@ -1166,7 +1193,19 @@ function updateCounts() {
   });
 }
 
-/* ── ARCHIVE (FIX #3) ── */
+/* ── ARCHIVE HELPERS ── */
+function boardLastDoneDate(board) {
+  // Returns the most recent completedDate string among all Done cards, or ''
+  const doneCards = board.cards && board.cards.done ? board.cards.done : [];
+  const dates = doneCards
+    .map(c => c.completedDate || '')
+    .filter(Boolean)
+    .sort()
+    .reverse();
+  return dates[0] || '';
+}
+
+/* ── ARCHIVE ── */
 function renderArchive() {
   const list = document.getElementById('archive-list');
   list.innerHTML = '';
@@ -1174,13 +1213,34 @@ function renderArchive() {
     list.innerHTML = '<div class="archive-empty">No archived boards</div>';
     return;
   }
-  appState.archived.forEach((board, idx) => {
+
+  // Sort newest last-done date first; boards with no done date go to bottom
+  const sorted = [...appState.archived].map((board, origIdx) => ({ board, origIdx, lastDone: boardLastDoneDate(board) }));
+  sorted.sort((a, b) => {
+    if (!a.lastDone && !b.lastDone) return 0;
+    if (!a.lastDone) return 1;
+    if (!b.lastDone) return -1;
+    return b.lastDone.localeCompare(a.lastDone); // newest first
+  });
+
+  sorted.forEach(({ board, origIdx }) => {
     const item = document.createElement('div');
     item.className = 'archive-item';
+
+    const nameCol = document.createElement('div');
+    nameCol.style.cssText = 'display:flex;flex-direction:column;gap:3px;flex:1;min-width:0;';
 
     const name = document.createElement('span');
     name.className = 'archive-item-name';
     name.textContent = board.name;
+
+    const lastDone = boardLastDoneDate(board);
+    const dateLine = document.createElement('span');
+    dateLine.style.cssText = 'font-size:10px;color:var(--text-muted);';
+    dateLine.textContent = lastDone ? 'last done ' + fmtDate(lastDone) : 'no completed cards';
+
+    nameCol.appendChild(name);
+    nameCol.appendChild(dateLine);
 
     const acts = document.createElement('div');
     acts.className = 'archive-item-actions';
@@ -1191,7 +1251,7 @@ function renderArchive() {
     restoreBtn.addEventListener('click', () => {
       save();
       appState.boards.push(board);
-      appState.archived.splice(idx, 1);
+      appState.archived.splice(origIdx, 1);
       appState.activeBoardId = board.id;
       save();
       renderTabs();
@@ -1204,14 +1264,14 @@ function renderArchive() {
     deleteBtn.textContent = 'Delete';
     deleteBtn.addEventListener('click', () => {
       if (!confirm(`Permanently delete "${board.name}"?`)) return;
-      appState.archived.splice(idx, 1);
+      appState.archived.splice(origIdx, 1);
       save();
       renderArchive();
     });
 
     acts.appendChild(restoreBtn);
     acts.appendChild(deleteBtn);
-    item.appendChild(name);
+    item.appendChild(nameCol);
     item.appendChild(acts);
     list.appendChild(item);
   });
