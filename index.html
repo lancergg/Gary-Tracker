@@ -151,6 +151,22 @@ body {
 .board-tab.renaming .tab-name { display: none; }
 .board-tab.renaming .tab-rename-input { display: block; }
 
+.tab-rename-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 11px;
+  padding: 0 2px;
+  opacity: 0;
+  transition: opacity var(--transition), color var(--transition);
+  line-height: 1;
+  flex-shrink: 0;
+  pointer-events: auto;
+}
+.board-tab:hover .tab-rename-btn { opacity: 1; }
+.tab-rename-btn:hover { color: var(--text-primary); }
+
 .tab-del {
   background: none;
   border: none;
@@ -368,7 +384,19 @@ body {
 .checklist-item-del:hover { color: var(--delete-color); }
 
 .checklist-progress {
-  font-size: 10px; color: var(--text-muted); margin-bottom: 5px;
+  display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+}
+.checklist-bar-track {
+  flex: 1; height: 4px; background: var(--col-border);
+  border-radius: 2px; overflow: hidden;
+}
+.checklist-bar-fill {
+  height: 100%; background: var(--accent-done);
+  border-radius: 2px; transition: width 0.2s ease;
+}
+.checklist-progress-pct {
+  font-size: 10px; color: var(--text-secondary);
+  font-weight: 500; min-width: 30px; text-align: right;
 }
 
 .add-checklist-item {
@@ -676,6 +704,31 @@ function renderTabs() {
     });
     renameInput.addEventListener('click', e => e.stopPropagation());
 
+    // Rename pencil button — always visible on hover for all tabs
+    const renameBtn = document.createElement('button');
+    renameBtn.className = 'tab-rename-btn';
+    renameBtn.innerHTML = '&#9998;'; // pencil
+    renameBtn.title = 'Rename board';
+    renameBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      // Switch to this board first if not active
+      if (appState.activeBoardId !== board.id) {
+        save();
+        appState.activeBoardId = board.id;
+        renderTabs();
+        renderBoard();
+        // After re-render, trigger rename on new tab
+        setTimeout(() => {
+          const newTab = document.querySelector(`.board-tab[data-board-id="${board.id}"]`);
+          if (newTab) newTab.querySelector('.tab-rename-btn').click();
+        }, 50);
+        return;
+      }
+      tab.classList.add('renaming');
+      renameInput.focus();
+      renameInput.select();
+    });
+
     const delBtn = document.createElement('button');
     delBtn.className = 'tab-del';
     delBtn.innerHTML = '&#x2715;';
@@ -693,8 +746,10 @@ function renderTabs() {
       renderArchive();
     });
 
+    tab.dataset.boardId = board.id;
     tab.appendChild(nameSpan);
     tab.appendChild(renameInput);
+    tab.appendChild(renameBtn);
     tab.appendChild(delBtn);
 
     // Entire tab switches board on click (FIX #1)
@@ -896,10 +951,37 @@ function makeCard(data) {
   const checklistEl = document.createElement('div');
   checklistEl.className = 'checklist';
 
+  // Progress bar elements — built once, referenced in update
+  const progressRow = document.createElement('div');
+  progressRow.className = 'checklist-progress';
+  const barTrack = document.createElement('div');
+  barTrack.className = 'checklist-bar-track';
+  const barFill = document.createElement('div');
+  barFill.className = 'checklist-bar-fill';
+  barFill.style.width = '0%';
+  const pctLabel = document.createElement('span');
+  pctLabel.className = 'checklist-progress-pct';
+  pctLabel.textContent = '0%';
+  barTrack.appendChild(barFill);
+  progressRow.appendChild(barTrack);
+  progressRow.appendChild(pctLabel);
+
   function updateChecklistLabel() {
     const items = checklistEl.querySelectorAll('.checklist-item');
-    const done = checklistEl.querySelectorAll('.checklist-item.checked').length;
-    checkLabel.textContent = items.length ? `Checklist (${done}/${items.length})` : 'Checklist';
+    const doneCount = checklistEl.querySelectorAll('.checklist-item.checked').length;
+    const total = items.length;
+    if (total === 0) {
+      checkLabel.textContent = 'Checklist';
+      progressRow.style.display = 'none';
+    } else {
+      const pct = Math.round((doneCount / total) * 100);
+      checkLabel.textContent = `Checklist (${doneCount}/${total})`;
+      barFill.style.width = pct + '%';
+      pctLabel.textContent = pct + '%';
+      // Turn bar green when 100%
+      barFill.style.background = pct === 100 ? 'var(--accent-done)' : 'var(--accent-doing)';
+      progressRow.style.display = '';
+    }
   }
 
   function makeCheckItem(itemText='', checked=false) {
@@ -967,6 +1049,7 @@ function makeCard(data) {
   addCheckWrap.appendChild(newItemInput);
   addCheckWrap.appendChild(addItemBtn);
   checkSection.appendChild(checkLabel);
+  checkSection.appendChild(progressRow);
   checkSection.appendChild(checklistEl);
   checkSection.appendChild(addCheckWrap);
   expandSection.appendChild(checkSection);
