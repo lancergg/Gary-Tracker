@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gary's Board</title>
+<title>Gary's Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -72,11 +72,11 @@ body {
   flex-direction: column;
 }
 
-/* TOP NAV */
+/* ── TOP NAV ── */
 .top-nav {
   display: flex;
-  align-items: center;
-  padding: 0 1.5rem;
+  align-items: stretch;
+  padding: 0 1.25rem;
   border-bottom: 1px solid var(--col-border);
   background: var(--surface);
   min-height: 52px;
@@ -86,33 +86,34 @@ body {
 
 .brand {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 300;
   font-style: italic;
   color: var(--text-primary);
   letter-spacing: -0.02em;
-  margin-right: 1.5rem;
+  margin-right: 1.25rem;
   white-space: nowrap;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
 .board-tabs {
   display: flex;
   align-items: stretch;
-  gap: 2px;
+  gap: 0;
   flex: 1;
   overflow-x: auto;
   scrollbar-width: none;
-  min-height: 52px;
 }
 .board-tabs::-webkit-scrollbar { display: none; }
 
+/* FIX #1: entire tab is the click target */
 .board-tab {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 0 14px;
-  min-height: 52px;
   font-family: var(--font-mono);
   font-size: 12px;
   color: var(--text-secondary);
@@ -122,54 +123,76 @@ body {
   cursor: pointer;
   white-space: nowrap;
   transition: color var(--transition), border-color var(--transition);
+  min-width: 0;
+  position: relative;
 }
 .board-tab:hover { color: var(--text-primary); }
 .board-tab.active { color: var(--text-primary); border-bottom-color: var(--text-primary); }
 
-.tab-name-edit {
-  background: none;
-  border: none;
+.tab-name {
+  pointer-events: none; /* tab click goes to button, not span */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+.board-tab.active .tab-name { pointer-events: auto; }
+
+/* Hidden real input for renaming */
+.tab-rename-input {
+  display: none;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: inherit;
+  background: none;
+  border: none;
+  color: var(--text-primary);
   outline: none;
-  min-width: 60px;
-  max-width: 160px;
-  cursor: pointer;
+  width: 110px;
 }
-.board-tab.active .tab-name-edit { cursor: text; }
+.board-tab.renaming .tab-name { display: none; }
+.board-tab.renaming .tab-rename-input { display: block; }
 
 .tab-del {
   background: none;
   border: none;
   cursor: pointer;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 11px;
   padding: 0;
   opacity: 0;
   transition: opacity var(--transition), color var(--transition);
   line-height: 1;
   flex-shrink: 0;
+  pointer-events: auto;
 }
 .board-tab:hover .tab-del { opacity: 1; }
 .tab-del:hover { color: var(--delete-color); }
 
-.new-board-btn {
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.nav-btn {
   background: none;
   border: none;
   cursor: pointer;
   color: var(--text-muted);
-  font-size: 22px;
-  padding: 0 8px;
-  min-height: 52px;
+  font-size: 11px;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
-  transition: color var(--transition);
-  flex-shrink: 0;
+  gap: 4px;
+  transition: color var(--transition), background var(--transition);
+  white-space: nowrap;
+  font-family: var(--font-mono);
 }
-.new-board-btn:hover { color: var(--text-primary); }
+.nav-btn:hover { color: var(--text-primary); background: var(--col-bg); }
 
-/* BOARD */
+/* ── BOARD ── */
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -180,7 +203,7 @@ body {
   overflow-y: auto;
 }
 
-/* COLUMNS */
+/* ── COLUMNS ── */
 .column {
   background: var(--col-bg);
   border: 1px solid var(--col-border);
@@ -198,29 +221,17 @@ body {
   justify-content: space-between;
   border-bottom: 1px solid var(--col-border);
 }
-
 .col-title-group { display: flex; align-items: center; gap: 10px; }
-
 .col-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 [data-col="todo"] .col-dot { background: var(--accent-todo); }
 [data-col="doing"] .col-dot { background: var(--accent-doing); }
 [data-col="done"] .col-dot { background: var(--accent-done); }
-
 .col-title { font-family: var(--font-display); font-size: 1rem; font-weight: 500; letter-spacing: -0.01em; }
-
-.col-badge {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  padding: 2px 7px;
-  border-radius: 20px;
-  letter-spacing: 0.03em;
-}
+.col-badge { font-family: var(--font-mono); font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 20px; letter-spacing: 0.03em; }
 [data-col="todo"] .col-badge { background: var(--accent-todo-light); color: var(--accent-todo); }
 [data-col="doing"] .col-badge { background: var(--accent-doing-light); color: var(--accent-doing); }
 [data-col="done"] .col-badge { background: var(--accent-done-light); color: var(--accent-done); }
 
-/* CARDS CONTAINER */
 .cards-container {
   flex: 1;
   padding: 0.75rem;
@@ -231,7 +242,7 @@ body {
 }
 .cards-container.drag-over { background: rgba(0,0,0,0.03); }
 
-/* CARD */
+/* ── CARD ── */
 .card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -242,53 +253,47 @@ body {
   transition: box-shadow var(--transition), transform var(--transition), opacity var(--transition);
 }
 .card:active { cursor: grabbing; }
-.card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.05);
-  transform: translateY(-1px);
-}
+.card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.05); transform: translateY(-1px); }
 .card.dragging { opacity: 0.4; transform: scale(0.97); box-shadow: none; }
 .card.drag-placeholder {
   border: 1.5px dashed var(--col-border);
-  background: transparent;
-  box-shadow: none;
-  pointer-events: none;
-  min-height: 60px;
+  background: transparent; box-shadow: none;
+  pointer-events: none; min-height: 60px;
 }
 
 .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 
 .card-text {
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--text-primary);
-  flex: 1;
-  word-break: break-word;
+  font-size: 13px; line-height: 1.55;
+  color: var(--text-primary); flex: 1; word-break: break-word;
 }
 .card-text[contenteditable="true"] { outline: none; cursor: text; }
 
-.delete-btn {
+.card-actions { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
+
+.card-icon-btn {
   background: none; border: none; cursor: pointer;
-  color: var(--text-muted); padding: 0;
-  width: 18px; height: 18px;
+  color: var(--text-muted); padding: 2px;
+  width: 20px; height: 20px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 3px; flex-shrink: 0;
   opacity: 0;
   transition: opacity var(--transition), color var(--transition), background var(--transition);
-  font-size: 13px; line-height: 1;
+  font-size: 12px;
 }
-.card:hover .delete-btn { opacity: 1; }
-.delete-btn:hover { color: var(--delete-color); background: rgba(180,60,60,0.08); }
+.card:hover .card-icon-btn { opacity: 1; }
+.card-icon-btn:hover { color: var(--text-primary); background: var(--col-bg); }
+.card-icon-btn.delete:hover { color: var(--delete-color); background: rgba(180,60,60,0.08); }
 
-/* CARD META */
-.card-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; align-items: center; }
+/* ── CARD META (dates) ── */
+.card-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; align-items: center; }
 
 .date-pill {
   display: inline-flex; align-items: center;
   font-size: 10px; letter-spacing: 0.03em;
   padding: 2px 7px; border-radius: 20px;
   border: 1px solid var(--col-border);
-  color: var(--text-secondary);
-  background: var(--col-bg);
+  color: var(--text-secondary); background: var(--col-bg);
   white-space: nowrap;
 }
 .date-pill.overdue { background: var(--overdue-light); color: var(--overdue-color); border-color: var(--overdue-color); }
@@ -297,44 +302,111 @@ body {
 
 .due-input-wrap { display: flex; align-items: center; gap: 5px; }
 .due-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.04em; }
-
 .due-input {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  background: var(--col-bg);
-  border: 1px solid var(--col-border);
-  border-radius: 4px;
-  padding: 2px 6px;
-  color: var(--text-primary);
-  outline: none;
-  cursor: pointer;
+  font-family: var(--font-mono); font-size: 10px;
+  background: var(--col-bg); border: 1px solid var(--col-border);
+  border-radius: 4px; padding: 2px 6px;
+  color: var(--text-primary); outline: none; cursor: pointer;
   transition: border-color var(--transition);
 }
 .due-input:focus { border-color: var(--text-secondary); }
 
-/* ADD AREA */
+/* ── CARD EXPAND (notes + checklist) ── */
+.card-expand {
+  display: none;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--card-border);
+}
+.card-expand.open { display: block; }
+
+.expand-section { margin-bottom: 10px; }
+.expand-section:last-child { margin-bottom: 0; }
+
+.expand-label {
+  font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 5px; display: block;
+}
+
+.notes-input {
+  width: 100%;
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--col-bg); border: 1px solid var(--col-border);
+  border-radius: var(--radius-sm); padding: 7px 9px;
+  color: var(--text-primary); resize: none; outline: none;
+  min-height: 60px; max-height: 160px;
+  transition: border-color var(--transition);
+  line-height: 1.5;
+}
+.notes-input:focus { border-color: var(--text-secondary); }
+.notes-input::placeholder { color: var(--text-muted); }
+
+/* checklist */
+.checklist { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
+
+.checklist-item {
+  display: flex; align-items: center; gap: 7px;
+  padding: 3px 0;
+}
+.checklist-item input[type="checkbox"] {
+  width: 13px; height: 13px; cursor: pointer;
+  accent-color: var(--accent-done); flex-shrink: 0;
+}
+.checklist-item-text {
+  font-size: 12px; flex: 1; color: var(--text-primary);
+  background: none; border: none; outline: none;
+  font-family: var(--font-mono); padding: 0;
+}
+.checklist-item-text:focus { border-bottom: 1px solid var(--col-border); }
+.checklist-item.checked .checklist-item-text { text-decoration: line-through; color: var(--text-muted); }
+.checklist-item-del {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted); font-size: 11px; padding: 0;
+  opacity: 0; transition: opacity var(--transition), color var(--transition);
+}
+.checklist-item:hover .checklist-item-del { opacity: 1; }
+.checklist-item-del:hover { color: var(--delete-color); }
+
+.checklist-progress {
+  font-size: 10px; color: var(--text-muted); margin-bottom: 5px;
+}
+
+.add-checklist-item {
+  display: flex; gap: 5px; align-items: center;
+}
+.checklist-new-input {
+  flex: 1; font-family: var(--font-mono); font-size: 12px;
+  background: var(--col-bg); border: 1px solid var(--col-border);
+  border-radius: 4px; padding: 4px 8px;
+  color: var(--text-primary); outline: none;
+  transition: border-color var(--transition);
+}
+.checklist-new-input:focus { border-color: var(--text-secondary); }
+.checklist-new-input::placeholder { color: var(--text-muted); }
+.checklist-add-btn {
+  font-family: var(--font-mono); font-size: 14px;
+  background: var(--col-bg); border: 1px solid var(--col-border);
+  border-radius: 4px; padding: 3px 8px;
+  color: var(--text-secondary); cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+.checklist-add-btn:hover { background: var(--card-border); color: var(--text-primary); }
+
+/* ── ADD AREA ── */
 .add-area { padding: 0.625rem 0.75rem 0.75rem; border-top: 1px solid var(--col-border); }
 .add-input-wrap { display: flex; align-items: flex-end; gap: 6px; }
-
 .add-input {
-  flex: 1;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-sm);
-  padding: 7px 10px;
-  color: var(--text-primary);
-  resize: none; outline: none;
+  flex: 1; font-family: var(--font-mono); font-size: 12px;
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm); padding: 7px 10px;
+  color: var(--text-primary); resize: none; outline: none;
   transition: border-color var(--transition);
   min-height: 34px; max-height: 96px; overflow-y: auto;
 }
 .add-input::placeholder { color: var(--text-muted); }
 .add-input:focus { box-shadow: 0 0 0 2px rgba(0,0,0,0.05); }
-
 .add-btn {
-  font-family: var(--font-mono);
-  font-size: 18px; line-height: 1;
+  font-family: var(--font-mono); font-size: 18px; line-height: 1;
   background: var(--text-primary); color: var(--bg);
   border: none; border-radius: var(--radius-sm);
   width: 34px; height: 34px;
@@ -345,58 +417,106 @@ body {
 .add-btn:hover { opacity: 0.8; }
 .add-btn:active { transform: scale(0.95); }
 
-/* EMPTY STATE */
+/* ── EMPTY STATE ── */
 .empty-state {
   text-align: center; padding: 2rem 1rem;
   color: var(--text-muted); font-size: 11px;
-  letter-spacing: 0.06em; text-transform: uppercase;
-  display: none;
+  letter-spacing: 0.06em; text-transform: uppercase; display: none;
 }
 .cards-container.is-empty ~ .empty-state { display: block; }
 
-/* MODAL */
+/* ── ARCHIVE DRAWER ── */
+.archive-drawer {
+  display: none;
+  position: fixed; top: 52px; right: 0; bottom: 0;
+  width: 280px;
+  background: var(--surface);
+  border-left: 1px solid var(--col-border);
+  z-index: 50;
+  flex-direction: column;
+  box-shadow: -4px 0 16px rgba(0,0,0,0.08);
+}
+.archive-drawer.open { display: flex; }
+
+.archive-header {
+  padding: 1rem 1.25rem 0.875rem;
+  border-bottom: 1px solid var(--col-border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.archive-title {
+  font-family: var(--font-display); font-size: 1rem;
+  font-weight: 300; font-style: italic;
+}
+.archive-close {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted); font-size: 16px;
+  transition: color var(--transition);
+}
+.archive-close:hover { color: var(--text-primary); }
+
+.archive-list { flex: 1; overflow-y: auto; padding: 0.75rem; display: flex; flex-direction: column; gap: 6px; }
+
+.archive-item {
+  background: var(--col-bg); border: 1px solid var(--col-border);
+  border-radius: var(--radius-sm); padding: 10px 12px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.archive-item-name { font-size: 12px; flex: 1; }
+.archive-item-actions { display: flex; gap: 4px; }
+.archive-action-btn {
+  background: none; border: 1px solid var(--col-border);
+  border-radius: 4px; padding: 3px 8px;
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--text-secondary); cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+.archive-action-btn:hover { background: var(--card-border); color: var(--text-primary); }
+.archive-action-btn.danger:hover { color: var(--delete-color); border-color: var(--delete-color); }
+
+.archive-empty {
+  text-align: center; padding: 2rem 1rem;
+  color: var(--text-muted); font-size: 11px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* ── MODAL ── */
 .modal-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(0,0,0,0.35); z-index: 100;
   align-items: center; justify-content: center;
 }
 .modal-overlay.open { display: flex; }
-
 .modal {
-  background: var(--surface);
-  border: 1px solid var(--col-border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  width: 320px; max-width: 90vw;
+  background: var(--surface); border: 1px solid var(--col-border);
+  border-radius: var(--radius); padding: 1.5rem;
+  width: 340px; max-width: 90vw;
   box-shadow: 0 8px 32px rgba(0,0,0,0.15);
 }
 .modal h2 {
-  font-family: var(--font-display);
-  font-size: 1.1rem; font-weight: 300; font-style: italic;
-  margin-bottom: 1rem;
+  font-family: var(--font-display); font-size: 1.1rem;
+  font-weight: 300; font-style: italic; margin-bottom: 0.75rem;
 }
-.modal input {
-  width: 100%;
-  font-family: var(--font-mono); font-size: 13px;
+.modal p { font-size: 12px; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5; }
+.modal input[type="text"] {
+  width: 100%; font-family: var(--font-mono); font-size: 13px;
   background: var(--card-bg); border: 1px solid var(--card-border);
   border-radius: var(--radius-sm); padding: 8px 12px;
   color: var(--text-primary); outline: none; margin-bottom: 1rem;
 }
-.modal input:focus { border-color: var(--text-secondary); }
-.modal-btns { display: flex; gap: 8px; justify-content: flex-end; }
-
+.modal input[type="text"]:focus { border-color: var(--text-secondary); }
+.modal-btns { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
 .modal-btn {
   font-family: var(--font-mono); font-size: 12px;
-  padding: 6px 16px; border-radius: var(--radius-sm);
+  padding: 6px 14px; border-radius: var(--radius-sm);
   border: 1px solid var(--col-border);
   cursor: pointer; background: var(--col-bg); color: var(--text-primary);
-  transition: background var(--transition);
+  transition: background var(--transition), opacity var(--transition);
 }
 .modal-btn:hover { background: var(--card-border); }
 .modal-btn.primary { background: var(--text-primary); color: var(--bg); border-color: var(--text-primary); }
 .modal-btn.primary:hover { opacity: 0.85; }
 
-/* ANIMATIONS */
+/* ── ANIMATIONS ── */
 .card-enter { animation: cardIn 0.2s ease forwards; }
 @keyframes cardIn {
   from { opacity: 0; transform: translateY(6px) scale(0.98); }
@@ -406,26 +526,44 @@ body {
 @media (max-width: 700px) {
   .board { grid-template-columns: 1fr; }
   .brand { font-size: 1rem; margin-right: 0.75rem; }
+  .archive-drawer { width: 100%; }
 }
 </style>
 </head>
 <body>
 
+<!-- TOP NAV -->
 <nav class="top-nav">
   <span class="brand">Gary's Board</span>
   <div class="board-tabs" id="board-tabs"></div>
-  <button class="new-board-btn" id="new-board-btn" title="New board">+</button>
+  <div class="nav-actions">
+    <button class="nav-btn" id="archive-toggle-btn" title="Archived boards">&#9632; Archive</button>
+    <button class="nav-btn" id="new-board-btn" title="New board">+ New board</button>
+  </div>
 </nav>
 
+<!-- BOARD -->
 <div class="board" id="board"></div>
 
-<div class="modal-overlay" id="modal-overlay">
+<!-- ARCHIVE DRAWER -->
+<div class="archive-drawer" id="archive-drawer">
+  <div class="archive-header">
+    <span class="archive-title">Archived boards</span>
+    <button class="archive-close" id="archive-close">&#x2715;</button>
+  </div>
+  <div class="archive-list" id="archive-list"></div>
+</div>
+
+<!-- NEW BOARD MODAL -->
+<div class="modal-overlay" id="modal-new">
   <div class="modal">
     <h2>New board</h2>
-    <input id="new-board-input" type="text" placeholder="Board name..." maxlength="40" />
+    <input type="text" id="new-board-name" placeholder="Board name..." maxlength="40" />
+    <p id="carryover-question">Copy all cards from <strong id="current-board-name-label"></strong> into this board?</p>
     <div class="modal-btns">
       <button class="modal-btn" id="modal-cancel">Cancel</button>
-      <button class="modal-btn primary" id="modal-create">Create</button>
+      <button class="modal-btn" id="modal-blank">Start blank</button>
+      <button class="modal-btn primary" id="modal-copy">Copy cards</button>
     </div>
   </div>
 </div>
@@ -434,9 +572,9 @@ body {
 const COLS       = ['todo','doing','done'];
 const COL_LABELS = { todo:'To Do', doing:'Doing', done:'Done' };
 const COL_EMPTY  = { todo:'Nothing here yet', doing:'Nothing in progress', done:'Completions appear here' };
-const STORE_KEY  = 'garyboard_v1';
+const STORE_KEY  = 'garyboard_v2';
 
-let appState = { activeBoardId: null, boards: [] };
+let appState = { activeBoardId: null, boards: [], archived: [] };
 let draggedCard = null, placeholder = null;
 
 function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
@@ -446,13 +584,17 @@ function fmtDate(s) {
   const [y,m,d] = s.split('-');
   return `${m}/${d}/${y.slice(2)}`;
 }
+function deepClone(o) { return JSON.parse(JSON.stringify(o)); }
 
 /* ── PERSISTENCE ── */
 function loadApp() {
   try { const r = localStorage.getItem(STORE_KEY); if (r) appState = JSON.parse(r); } catch(e) {}
-  if (!appState.boards || !appState.boards.length) {
+  if (!appState.boards) appState.boards = [];
+  if (!appState.archived) appState.archived = [];
+  if (!appState.boards.length) {
     const id = genId();
-    appState = { activeBoardId: id, boards: [{ id, name:'My First Board', cards:{ todo:[], doing:[], done:[] } }] };
+    appState.boards = [{ id, name:'My First Board', cards:{ todo:[], doing:[], done:[] } }];
+    appState.activeBoardId = id;
   }
   if (!appState.activeBoardId || !appState.boards.find(b => b.id === appState.activeBoardId)) {
     appState.activeBoardId = appState.boards[0].id;
@@ -465,13 +607,23 @@ function snapshotActive() {
   COLS.forEach(col => {
     const container = document.getElementById('col-' + col);
     if (!container) return;
-    board.cards[col] = [...container.querySelectorAll('.card')].map(el => ({
-      id: el.dataset.id,
-      text: el.querySelector('.card-text').textContent,
-      dueDate: el.dataset.dueDate || '',
-      completedDate: el.dataset.completedDate || ''
-    }));
+    board.cards[col] = [...container.querySelectorAll('.card')].map(cardToData);
   });
+}
+
+function cardToData(el) {
+  const checklist = [...el.querySelectorAll('.checklist-item')].map(item => ({
+    text: item.querySelector('.checklist-item-text').value,
+    checked: item.querySelector('input[type="checkbox"]').checked
+  }));
+  return {
+    id: el.dataset.id,
+    text: el.querySelector('.card-text').textContent,
+    dueDate: el.dataset.dueDate || '',
+    completedDate: el.dataset.completedDate || '',
+    notes: el.querySelector('.notes-input') ? el.querySelector('.notes-input').value : '',
+    checklist
+  };
 }
 
 function save() {
@@ -487,47 +639,74 @@ function renderTabs() {
   const el = document.getElementById('board-tabs');
   el.innerHTML = '';
   appState.boards.forEach(board => {
+    const isActive = board.id === appState.activeBoardId;
     const tab = document.createElement('button');
-    tab.className = 'board-tab' + (board.id === appState.activeBoardId ? ' active' : '');
+    tab.className = 'board-tab' + (isActive ? ' active' : '');
+    tab.title = 'Click to switch, double-click name to rename';
 
-    const nameEl = document.createElement('input');
-    nameEl.className = 'tab-name-edit';
-    nameEl.type = 'text';
-    nameEl.value = board.name;
-    nameEl.style.width = Math.max(60, board.name.length * 7.8) + 'px';
-    nameEl.addEventListener('click', e => e.stopPropagation());
-    nameEl.addEventListener('keydown', e => { if (e.key === 'Enter') nameEl.blur(); e.stopPropagation(); });
-    nameEl.addEventListener('change', () => {
-      board.name = nameEl.value.trim() || 'Untitled';
-      nameEl.value = board.name;
-      nameEl.style.width = Math.max(60, board.name.length * 7.8) + 'px';
-      save();
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'tab-name';
+    nameSpan.textContent = board.name;
+
+    const renameInput = document.createElement('input');
+    renameInput.type = 'text';
+    renameInput.className = 'tab-rename-input';
+    renameInput.value = board.name;
+    renameInput.maxLength = 40;
+
+    // Double-click on name to rename (only active tab)
+    nameSpan.addEventListener('dblclick', e => {
+      if (!isActive) return;
+      e.stopPropagation();
+      tab.classList.add('renaming');
+      renameInput.focus();
+      renameInput.select();
     });
+    renameInput.addEventListener('blur', () => {
+      board.name = renameInput.value.trim() || board.name;
+      tab.classList.remove('renaming');
+      nameSpan.textContent = board.name;
+      save();
+      renderTabs();
+    });
+    renameInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') renameInput.blur();
+      if (e.key === 'Escape') { renameInput.value = board.name; renameInput.blur(); }
+      e.stopPropagation();
+    });
+    renameInput.addEventListener('click', e => e.stopPropagation());
 
     const delBtn = document.createElement('button');
     delBtn.className = 'tab-del';
     delBtn.innerHTML = '&#x2715;';
-    delBtn.title = 'Delete this board';
+    delBtn.title = 'Archive this board';
     delBtn.addEventListener('click', e => {
       e.stopPropagation();
-      if (appState.boards.length === 1) return alert('You need at least one board.');
-      if (!confirm(`Delete board "${board.name}"?`)) return;
+      if (appState.boards.length === 1) { alert('Archive all boards? Create a new one first.'); return; }
+      snapshotActive();
+      appState.archived.unshift(deepClone(board));
       appState.boards = appState.boards.filter(b => b.id !== board.id);
       if (appState.activeBoardId === board.id) appState.activeBoardId = appState.boards[0].id;
       save();
       renderTabs();
       renderBoard();
+      renderArchive();
     });
 
-    tab.appendChild(nameEl);
+    tab.appendChild(nameSpan);
+    tab.appendChild(renameInput);
     tab.appendChild(delBtn);
-    tab.addEventListener('click', () => {
+
+    // Entire tab switches board on click (FIX #1)
+    tab.addEventListener('click', e => {
+      if (tab.classList.contains('renaming')) return;
       if (appState.activeBoardId === board.id) return;
       save();
       appState.activeBoardId = board.id;
       renderTabs();
       renderBoard();
     });
+
     el.appendChild(tab);
   });
 }
@@ -566,7 +745,7 @@ function renderBoard() {
     setupAddBtn(col);
 
     (board.cards[col] || []).forEach(c => {
-      const card = makeCard(c.id, c.text, c.dueDate || '', c.completedDate || '');
+      const card = makeCard(c);
       card.classList.remove('card-enter');
       container.appendChild(card);
     });
@@ -586,7 +765,9 @@ function pillClass(dueDate, col) {
   return '';
 }
 
-function makeCard(id, text, dueDate, completedDate) {
+function makeCard(data) {
+  const { id, text, dueDate='', completedDate='', notes='', checklist=[] } = data;
+
   const card = document.createElement('div');
   card.className = 'card card-enter';
   card.dataset.id = id;
@@ -601,19 +782,16 @@ function makeCard(id, text, dueDate, completedDate) {
   const textEl = document.createElement('div');
   textEl.className = 'card-text';
   textEl.textContent = text;
-  textEl.title = 'Double-click to edit';
+  textEl.title = 'Double-click to edit title';
   textEl.addEventListener('dblclick', () => {
     textEl.contentEditable = 'true';
     card.draggable = false;
     textEl.focus();
-    const r = document.createRange();
-    r.selectNodeContents(textEl);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(r);
+    const r = document.createRange(); r.selectNodeContents(textEl);
+    window.getSelection().removeAllRanges(); window.getSelection().addRange(r);
   });
   textEl.addEventListener('blur', () => {
-    textEl.contentEditable = 'false';
-    card.draggable = true;
+    textEl.contentEditable = 'false'; card.draggable = true;
     if (!textEl.textContent.trim()) card.remove();
     save();
   });
@@ -622,8 +800,26 @@ function makeCard(id, text, dueDate, completedDate) {
     if (e.key === 'Escape') textEl.blur();
   });
 
+  /* action buttons */
+  const actions = document.createElement('div');
+  actions.className = 'card-actions';
+
+  // Expand toggle (notes/checklist) — FIX #2
+  const expandBtn = document.createElement('button');
+  expandBtn.className = 'card-icon-btn expand-btn';
+  expandBtn.title = 'Notes & checklist';
+  expandBtn.innerHTML = '&#9776;'; // hamburger
+  expandBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    expandSection.classList.toggle('open');
+    expandBtn.style.opacity = expandSection.classList.contains('open') ? '1' : '';
+    if (expandSection.classList.contains('open')) {
+      notesInput.focus();
+    }
+  });
+
   const delBtn = document.createElement('button');
-  delBtn.className = 'delete-btn';
+  delBtn.className = 'card-icon-btn delete';
   delBtn.innerHTML = '&#x2715;';
   delBtn.title = 'Delete card';
   delBtn.addEventListener('click', () => {
@@ -632,17 +828,18 @@ function makeCard(id, text, dueDate, completedDate) {
     setTimeout(() => { card.remove(); save(); }, 150);
   });
 
+  actions.appendChild(expandBtn);
+  actions.appendChild(delBtn);
   top.appendChild(textEl);
-  top.appendChild(delBtn);
+  top.appendChild(actions);
   card.appendChild(top);
 
-  /* meta row */
+  /* meta row (dates) */
   const meta = document.createElement('div');
   meta.className = 'card-meta';
 
   const duePill = document.createElement('span');
   duePill.className = 'date-pill';
-
   const donePill = document.createElement('span');
   donePill.className = 'date-pill done-stamp';
 
@@ -652,27 +849,136 @@ function makeCard(id, text, dueDate, completedDate) {
   dueLabel.className = 'due-label';
   dueLabel.textContent = 'due';
   const dueInput = document.createElement('input');
-  dueInput.type = 'date';
-  dueInput.className = 'due-input';
-  dueInput.value = dueDate;
-  dueInput.title = 'Set due date';
+  dueInput.type = 'date'; dueInput.className = 'due-input';
+  dueInput.value = dueDate; dueInput.title = 'Set due date';
   dueInput.addEventListener('change', () => {
     card.dataset.dueDate = dueInput.value;
-    refreshMeta(card, duePill, donePill);
+    refreshMeta(card, duePill, donePill); save();
+  });
+  dueWrap.appendChild(dueLabel); dueWrap.appendChild(dueInput);
+  meta.appendChild(duePill); meta.appendChild(donePill); meta.appendChild(dueWrap);
+  card.appendChild(meta);
+
+  /* ── EXPAND SECTION: notes + checklist ── */
+  const expandSection = document.createElement('div');
+  expandSection.className = 'card-expand';
+  // auto-open if has content
+  if (notes || checklist.length) expandSection.classList.add('open');
+
+  // Notes
+  const notesSection = document.createElement('div');
+  notesSection.className = 'expand-section';
+  const notesLabel = document.createElement('span');
+  notesLabel.className = 'expand-label';
+  notesLabel.textContent = 'Notes';
+  const notesInput = document.createElement('textarea');
+  notesInput.className = 'notes-input';
+  notesInput.placeholder = 'Add notes...';
+  notesInput.value = notes;
+  notesInput.addEventListener('mousedown', e => e.stopPropagation());
+  notesInput.addEventListener('input', () => {
+    notesInput.style.height = 'auto';
+    notesInput.style.height = Math.min(notesInput.scrollHeight, 160) + 'px';
     save();
   });
-  dueWrap.appendChild(dueLabel);
-  dueWrap.appendChild(dueInput);
+  notesInput.addEventListener('change', save);
+  notesSection.appendChild(notesLabel);
+  notesSection.appendChild(notesInput);
+  expandSection.appendChild(notesSection);
 
-  meta.appendChild(duePill);
-  meta.appendChild(donePill);
-  meta.appendChild(dueWrap);
-  card.appendChild(meta);
+  // Checklist
+  const checkSection = document.createElement('div');
+  checkSection.className = 'expand-section';
+  const checkLabel = document.createElement('span');
+  checkLabel.className = 'expand-label';
+  checkLabel.id = 'cl-label-' + id;
+
+  const checklistEl = document.createElement('div');
+  checklistEl.className = 'checklist';
+
+  function updateChecklistLabel() {
+    const items = checklistEl.querySelectorAll('.checklist-item');
+    const done = checklistEl.querySelectorAll('.checklist-item.checked').length;
+    checkLabel.textContent = items.length ? `Checklist (${done}/${items.length})` : 'Checklist';
+  }
+
+  function makeCheckItem(itemText='', checked=false) {
+    const row = document.createElement('div');
+    row.className = 'checklist-item' + (checked ? ' checked' : '');
+
+    const cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.checked = checked;
+    cb.addEventListener('change', () => {
+      row.classList.toggle('checked', cb.checked);
+      updateChecklistLabel(); save();
+    });
+
+    const textInput = document.createElement('input');
+    textInput.type = 'text';
+    textInput.className = 'checklist-item-text';
+    textInput.value = itemText;
+    textInput.placeholder = 'Item...';
+    textInput.addEventListener('mousedown', e => e.stopPropagation());
+    textInput.addEventListener('change', save);
+    textInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); newItemInput.focus(); }
+      if (e.key === 'Backspace' && !textInput.value) {
+        row.remove(); updateChecklistLabel(); save();
+      }
+    });
+
+    const delItem = document.createElement('button');
+    delItem.className = 'checklist-item-del';
+    delItem.innerHTML = '&#x2715;';
+    delItem.addEventListener('click', () => { row.remove(); updateChecklistLabel(); save(); });
+
+    row.appendChild(cb); row.appendChild(textInput); row.appendChild(delItem);
+    return row;
+  }
+
+  checklist.forEach(item => checklistEl.appendChild(makeCheckItem(item.text, item.checked)));
+  updateChecklistLabel();
+
+  const addCheckWrap = document.createElement('div');
+  addCheckWrap.className = 'add-checklist-item';
+  const newItemInput = document.createElement('input');
+  newItemInput.type = 'text';
+  newItemInput.className = 'checklist-new-input';
+  newItemInput.placeholder = 'Add item...';
+  newItemInput.addEventListener('mousedown', e => e.stopPropagation());
+  newItemInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && newItemInput.value.trim()) {
+      checklistEl.appendChild(makeCheckItem(newItemInput.value.trim()));
+      newItemInput.value = '';
+      updateChecklistLabel(); save();
+    }
+  });
+  const addItemBtn = document.createElement('button');
+  addItemBtn.className = 'checklist-add-btn';
+  addItemBtn.textContent = '+';
+  addItemBtn.addEventListener('click', () => {
+    if (newItemInput.value.trim()) {
+      checklistEl.appendChild(makeCheckItem(newItemInput.value.trim()));
+      newItemInput.value = '';
+      updateChecklistLabel(); save();
+    } else { newItemInput.focus(); }
+  });
+
+  addCheckWrap.appendChild(newItemInput);
+  addCheckWrap.appendChild(addItemBtn);
+  checkSection.appendChild(checkLabel);
+  checkSection.appendChild(checklistEl);
+  checkSection.appendChild(addCheckWrap);
+  expandSection.appendChild(checkSection);
+
+  card.appendChild(expandSection);
+
+  // Show expand icon persistently if has content
+  if (notes || checklist.length) expandBtn.style.opacity = '1';
 
   /* drag */
   card.addEventListener('dragstart', e => {
-    draggedCard = card;
-    e.dataTransfer.effectAllowed = 'move';
+    draggedCard = card; e.dataTransfer.effectAllowed = 'move';
     requestAnimationFrame(() => card.classList.add('dragging'));
     placeholder = document.createElement('div');
     placeholder.className = 'card drag-placeholder';
@@ -681,8 +987,7 @@ function makeCard(id, text, dueDate, completedDate) {
   card.addEventListener('dragend', () => {
     card.classList.remove('dragging');
     if (placeholder && placeholder.parentNode) placeholder.remove();
-    draggedCard = null; placeholder = null;
-    save();
+    draggedCard = null; placeholder = null; save();
   });
 
   refreshMeta(card, duePill, donePill);
@@ -700,16 +1005,12 @@ function refreshMeta(card, duePill, donePill) {
     duePill.className = 'date-pill' + (cls ? ' ' + cls : '');
     duePill.textContent = 'due ' + fmtDate(due);
     duePill.style.display = '';
-  } else {
-    duePill.style.display = 'none';
-  }
+  } else { duePill.style.display = 'none'; }
 
   if (done) {
     donePill.textContent = 'done ' + fmtDate(done);
     donePill.style.display = '';
-  } else {
-    donePill.style.display = 'none';
-  }
+  } else { donePill.style.display = 'none'; }
 }
 
 /* ── DRAG & DROP ── */
@@ -722,28 +1023,19 @@ function setupDrop(container) {
     else container.appendChild(placeholder);
   });
   container.addEventListener('dragenter', e => { e.preventDefault(); container.classList.add('drag-over'); });
-  container.addEventListener('dragleave', e => {
-    if (!container.contains(e.relatedTarget)) container.classList.remove('drag-over');
-  });
+  container.addEventListener('dragleave', e => { if (!container.contains(e.relatedTarget)) container.classList.remove('drag-over'); });
   container.addEventListener('drop', e => {
     e.preventDefault();
     container.classList.remove('drag-over');
     if (!draggedCard || !placeholder) return;
-
     const targetCol = container.dataset.col;
-    if (targetCol === 'done' && !draggedCard.dataset.completedDate) {
-      draggedCard.dataset.completedDate = todayStr();
-    }
-    if (targetCol !== 'done') {
-      draggedCard.dataset.completedDate = '';
-    }
-
+    if (targetCol === 'done' && !draggedCard.dataset.completedDate) draggedCard.dataset.completedDate = todayStr();
+    if (targetCol !== 'done') draggedCard.dataset.completedDate = '';
     container.insertBefore(draggedCard, placeholder);
     placeholder.remove();
-
-    const duePill = draggedCard.querySelector('.date-pill:not(.done-stamp)');
-    const donePill = draggedCard.querySelector('.done-stamp');
-    if (duePill && donePill) refreshMeta(draggedCard, duePill, donePill);
+    const dp = draggedCard.querySelector('.date-pill:not(.done-stamp)');
+    const donep = draggedCard.querySelector('.done-stamp');
+    if (dp && donep) refreshMeta(draggedCard, dp, donep);
     save();
   });
 }
@@ -766,10 +1058,9 @@ function setupAddBtn(col) {
     const trimmed = input.value.trim();
     if (!trimmed) return;
     const completedDate = col === 'done' ? todayStr() : '';
-    const card = makeCard(genId(), trimmed, '', completedDate);
+    const card = makeCard({ id: genId(), text: trimmed, dueDate:'', completedDate, notes:'', checklist:[] });
     document.getElementById('col-' + col).appendChild(card);
-    input.value = '';
-    input.style.height = 'auto';
+    input.value = ''; input.style.height = 'auto';
     save();
   };
   btn.addEventListener('click', submit);
@@ -792,40 +1083,113 @@ function updateCounts() {
   });
 }
 
-/* ── NEW BOARD MODAL ── */
-const overlay = document.getElementById('modal-overlay');
-const nameInput = document.getElementById('new-board-input');
+/* ── ARCHIVE (FIX #3) ── */
+function renderArchive() {
+  const list = document.getElementById('archive-list');
+  list.innerHTML = '';
+  if (!appState.archived.length) {
+    list.innerHTML = '<div class="archive-empty">No archived boards</div>';
+    return;
+  }
+  appState.archived.forEach((board, idx) => {
+    const item = document.createElement('div');
+    item.className = 'archive-item';
+
+    const name = document.createElement('span');
+    name.className = 'archive-item-name';
+    name.textContent = board.name;
+
+    const acts = document.createElement('div');
+    acts.className = 'archive-item-actions';
+
+    const restoreBtn = document.createElement('button');
+    restoreBtn.className = 'archive-action-btn';
+    restoreBtn.textContent = 'Restore';
+    restoreBtn.addEventListener('click', () => {
+      save();
+      appState.boards.push(board);
+      appState.archived.splice(idx, 1);
+      appState.activeBoardId = board.id;
+      save();
+      renderTabs();
+      renderBoard();
+      renderArchive();
+    });
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'archive-action-btn danger';
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.addEventListener('click', () => {
+      if (!confirm(`Permanently delete "${board.name}"?`)) return;
+      appState.archived.splice(idx, 1);
+      save();
+      renderArchive();
+    });
+
+    acts.appendChild(restoreBtn);
+    acts.appendChild(deleteBtn);
+    item.appendChild(name);
+    item.appendChild(acts);
+    list.appendChild(item);
+  });
+}
+
+document.getElementById('archive-toggle-btn').addEventListener('click', () => {
+  const drawer = document.getElementById('archive-drawer');
+  drawer.classList.toggle('open');
+  if (drawer.classList.contains('open')) renderArchive();
+});
+document.getElementById('archive-close').addEventListener('click', () => {
+  document.getElementById('archive-drawer').classList.remove('open');
+});
+
+/* ── NEW BOARD MODAL (FIX #4) ── */
+const modalNew = document.getElementById('modal-new');
+const newBoardNameInput = document.getElementById('new-board-name');
 
 document.getElementById('new-board-btn').addEventListener('click', () => {
-  nameInput.value = '';
-  overlay.classList.add('open');
-  setTimeout(() => nameInput.focus(), 50);
+  newBoardNameInput.value = '';
+  const cur = activeBoard();
+  document.getElementById('current-board-name-label').textContent = cur ? cur.name : 'current board';
+  modalNew.classList.add('open');
+  setTimeout(() => newBoardNameInput.focus(), 50);
 });
-document.getElementById('modal-cancel').addEventListener('click', () => overlay.classList.remove('open'));
-overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
 
-function createBoard() {
-  const name = nameInput.value.trim() || 'New Board';
+document.getElementById('modal-cancel').addEventListener('click', () => modalNew.classList.remove('open'));
+modalNew.addEventListener('click', e => { if (e.target === modalNew) modalNew.classList.remove('open'); });
+
+function createBoard(copyCards) {
+  const name = newBoardNameInput.value.trim() || 'New Board';
+  save(); // snapshot current board first
+  const cur = activeBoard();
+  let cards = { todo:[], doing:[], done:[] };
+  if (copyCards && cur) {
+    // deep clone cards but give new IDs
+    COLS.forEach(col => {
+      cards[col] = deepClone(cur.cards[col] || []).map(c => ({ ...c, id: genId() }));
+    });
+  }
   const id = genId();
-  save();
-  appState.boards.push({ id, name, cards: { todo:[], doing:[], done:[] } });
+  appState.boards.push({ id, name, cards });
   appState.activeBoardId = id;
-  overlay.classList.remove('open');
+  modalNew.classList.remove('open');
   save();
   renderTabs();
   renderBoard();
 }
 
-document.getElementById('modal-create').addEventListener('click', createBoard);
-nameInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') createBoard();
-  if (e.key === 'Escape') overlay.classList.remove('open');
+document.getElementById('modal-blank').addEventListener('click', () => createBoard(false));
+document.getElementById('modal-copy').addEventListener('click', () => createBoard(true));
+newBoardNameInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') createBoard(false);
+  if (e.key === 'Escape') modalNew.classList.remove('open');
 });
 
 /* ── BOOT ── */
 loadApp();
 renderTabs();
 renderBoard();
+renderArchive();
 </script>
 </body>
 </html>
