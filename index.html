@@ -443,10 +443,11 @@ async function sb(path, method='GET', body=null, token=null) {
 
 // ── AUTH ──────────────────────────────────────────────────────────────────
 async function sendMagicLink(email) {
+  const redirectTo = 'https://lancergg.github.io/Gary-Tracker/';
   const res = await fetch(`${SUPABASE_URL}/auth/v1/otp`, {
     method: 'POST',
     headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, create_user: true })
+    body: JSON.stringify({ email, create_user: true, options: { emailRedirectTo: redirectTo } })
   });
   if (!res.ok) throw new Error(await res.text());
 }
