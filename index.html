@@ -275,7 +275,7 @@ body { font-family: var(--font-mono); background: var(--bg); color: var(--text-p
 <nav class="top-nav" id="top-nav">
   <span class="brand">
     <span class="sync-dot" id="sync-dot"></span>
-    Gary's Board
+    Gary's Tracker
   </span>
   <div class="board-tabs" id="board-tabs"></div>
   <div class="nav-actions">
@@ -451,31 +451,57 @@ async function sendMagicLink(email) {
   if (!res.ok) throw new Error(await res.text());
 }
 
+async function refreshAccessToken(refreshToken) {
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
+    method: 'POST',
+    headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ refresh_token: refreshToken })
+  });
+  if (!res.ok) return null;
+  return await res.json();
+}
+
 async function getSession() {
+  // 1. Check URL hash from magic link
   const hash = window.location.hash;
   if (hash.includes('access_token')) {
     const params = new URLSearchParams(hash.slice(1));
     const token = params.get('access_token');
+    const refreshToken = params.get('refresh_token');
     if (token) {
       const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token } });
       if (res.ok) {
         const user = await res.json();
-        const session = { access_token: token, user };
+        const session = { access_token: token, refresh_token: refreshToken, user };
         localStorage.setItem('gb_session', JSON.stringify(session));
         window.history.replaceState({}, '', window.location.pathname);
         return session;
       }
     }
   }
+  // 2. Try stored session
   const stored = localStorage.getItem('gb_session');
-  if (stored) {
-    try {
-      const session = JSON.parse(stored);
-      const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + session.access_token } });
-      if (res.ok) return session;
-      localStorage.removeItem('gb_session');
-    } catch(e) {}
-  }
+  if (!stored) return null;
+  try {
+    const session = JSON.parse(stored);
+    // Try existing access token
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + session.access_token } });
+    if (res.ok) return session;
+    // Access token expired — try refresh token
+    if (session.refresh_token) {
+      const refreshed = await refreshAccessToken(session.refresh_token);
+      if (refreshed && refreshed.access_token) {
+        const newSession = {
+          access_token: refreshed.access_token,
+          refresh_token: refreshed.refresh_token || session.refresh_token,
+          user: refreshed.user || session.user
+        };
+        localStorage.setItem('gb_session', JSON.stringify(newSession));
+        return newSession;
+      }
+    }
+    localStorage.removeItem('gb_session');
+  } catch(e) { localStorage.removeItem('gb_session'); }
   return null;
 }
 
